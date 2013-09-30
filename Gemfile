@@ -38,5 +38,14 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # To use debugger
 # gem 'debugger'
+group :test do
+  gem 'rspec-rails',      ">= 2.0.0.beta"
+  gem 'rspec-core'
+  gem 'capybara'
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem "faker", "~> 1.2.0"
+end
 
 gem 'ruby-gmail'
