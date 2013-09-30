@@ -1,0 +1,10 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<% if @user %>
+Hi <%= @user.full_name %>,
+your account has been activated with code <%= @code %>
+<% else %>
+Fake token <%= @code %>
+<% end %>

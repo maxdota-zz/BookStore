@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Max's Online Bookstore</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="banner">
+    <%= image_tag("logo.png") %>
+    <%= @page_title || "Max Bookshelf" %>
+    <div id="time">
+      <%= Time.now %>
+    </div>
+  </div>
+
+  <div id="columns">
+    <div id="side">
+    </div>
+    <div id="main">
+      <%= yield %>
+    </div>
+  </div>
+
+</body>
+</html>
