@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130930054949) do
+ActiveRecord::Schema.define(:version => 20131001045437) do
 
   create_table "users", :force => true do |t|
     t.string   "email_address"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(:version => 20130930054949) do
     t.datetime "updated_at",            :null => false
     t.string   "role"
     t.boolean  "activation"
-    t.string   "active_code"
+    t.string   "tokenized_code"
     t.string   "username"
   end
 

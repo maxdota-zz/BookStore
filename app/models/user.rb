@@ -1,7 +1,7 @@
 require 'gmail'
 
 class User < ActiveRecord::Base
-  attr_accessible :username, :role, :activation, :account_creation_date, :birthday, :email_address, :full_name, :password_digest, :phone, :password, :password_confirmation, :active_code
+  attr_accessible :username, :role, :activation, :account_creation_date, :birthday, :email_address, :full_name, :password_digest, :phone, :password, :password_confirmation, :tokenized_code
   validates :email_address, :full_name, :username, presence: true
   validates :username, uniqueness: true
   validates :email_address, format: {
@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   }
 
   has_secure_password
+  after_destroy :ensure_an_admin_remains
+  after_save :ensure_an_admin_remains
 
   def send_activation_email(name, account, email_address, activate_link)
     gmail = Gmail.new("ngoc.nguyen@stanyangroup.com", "hongngoc92")
@@ -32,5 +34,13 @@ class User < ActiveRecord::Base
           <a href='" + activate_link + "'> Activate Account </a>"
         end
       end
+  end
+
+  private
+
+  def ensure_an_admin_remains
+    if User.find_by_role("admin").nil?
+      raise "Can't delete/downgrade the last admin"
+    end
   end
 end

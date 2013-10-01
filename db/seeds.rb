@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.delete_all
 User.create(username: 'n',
-  password_digest: '$2a$10$.z2zZtizY9MvE8.jKXd62uRe4MpSnCzqvdcVViLVnxKUw4vDU6aOm  ',
+  password_digest: '$2a$10$7AUsOhbKHCc2Q.5dvJy97OWYzz.zPd5wNyQSKGqPBFzAyM167pWUm',
   email_address: 'ngoc.nguyen@stanyangroup.com',
   birthday: Date.parse('1992-09-30'),
   account_creation_date: Date.parse('2013-09-30'),
