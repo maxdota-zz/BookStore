@@ -1,5 +1,17 @@
 Bookstore::Application.routes.draw do
+
+  controller :session do
+    get 'login' => :new
+    post 'login' => :create
+    delete 'logout' => :destroy
+  end
+
   resources :users
+
+  controller :users do
+    get 'usersupgrade/:id' => :upgrade
+    get 'usersdowngrade/:id' => :downgrade
+  end
 
 
   # The priority is based upon order of creation:
@@ -51,7 +63,7 @@ Bookstore::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'users#index'
 
   # See how all your routes lay out with "rake routes"
 
