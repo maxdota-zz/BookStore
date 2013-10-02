@@ -14,9 +14,8 @@ class UsersController < ApplicationController
 
   # GET /users/1
   # GET /users/1.json
-  def show
-  #  @user = User.find(params[:id])
-    @code = params[:id]
+  def activate
+    @code = params[:token]
     @user = User.find_by_tokenized_code(@code)
     if @user
       @user.update_attribute("activation", true)
@@ -55,7 +54,7 @@ class UsersController < ApplicationController
     @user.tokenized_code = Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s)
     respond_to do |format|
       if @user.save
-        @user.send_activation_email(@user.full_name, @user.username, @user.email_address, users_url + "/" + @user.tokenized_code)
+        @user.send_activation_email(@user.full_name, @user.username, @user.email_address, activate_url(@user.tokenized_code))
         format.html { redirect_to users_url, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
@@ -127,6 +126,53 @@ class UsersController < ApplicationController
         flash[:notice] = e.message
         format.html { redirect_to users_url }
       end
+    end
+  end
+
+  def password_reset_result
+    if (request.get?)
+      @code = params[:token]
+      @user = User.find_by_tokenized_code(@code)
+      if @user and @user.activation
+        @resetting = true
+        session[:code] = @code
+        session[:temp_username] = @user.username
+      end
+    else
+      @user_info = User.new(params[:user])
+      respond_to do |format|
+        if @user_info.password != @user_info.password_confirmation
+          format.html { redirect_to reset_result_path(session[:code]), notice: 'Password confirmation does not match the password.' }    
+        else          
+          @user = User.find_by_username(session[:temp_username])
+          @user.update_attribute("password", @user_info.password)
+          @user.update_attribute("password_confirmation", @user_info.password)
+          @user.update_attribute("tokenized_code", "")
+          session[:code] = nil
+          session[:temp_username] = nil     
+          format.html { redirect_to users_url, notice: 'New password has been set.' }
+        end
+      end
+    end
+  end
+
+  def password_reset
+    if (request.post?)
+      @user_info = User.new(params[:user])
+      @user = User.find_by_username(@user_info.username)
+      respond_to do |format|
+        if !@user or @user.email_address != @user_info.email_address
+          format.html { redirect_to password_reset_url, notice: 'Incorrect username/email address combination.' }
+        elsif !@user.activation
+          format.html { redirect_to password_reset_url, notice: 'This account is not activated.' }          
+        else
+          @user.update_attribute("tokenized_code", Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s))
+          @user.send_password_reset_email(@user.full_name, @user.username, @user.email_address, reset_result_url(@user.tokenized_code))
+          format.html { redirect_to password_reset_url, notice: 'Please check your email to reset the password.' }
+        end
+      end
+    else
+      @user = User.new
     end
   end
 end

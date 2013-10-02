@@ -9,10 +9,14 @@ Bookstore::Application.routes.draw do
   resources :users
 
   controller :users do
-    get 'usersupgrade/:id' => :upgrade
-    get 'usersdowngrade/:id' => :downgrade
+    get 'activate/:token' => 'users#activate', as: 'activate'
+    get 'user/upgrade/:id' => 'users#upgrade', as: 'upgrade'
+    get 'user/downgrade/:id' => 'users#downgrade', as: 'downgrade'
+    get 'user/passwordreset' => 'users#password_reset', as: 'password_reset'
+    post 'user/passwordreset' => 'users#password_reset', as: 'password_reset'
+    get 'user/passwordresetresult/:token' => 'users#password_reset_result', as: 'reset_result'
+    post 'user/passwordresetresult' => 'users#password_reset_result', as: 'password_reset_result'
   end
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
