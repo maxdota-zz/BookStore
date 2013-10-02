@@ -66,10 +66,7 @@ class UsersController < ApplicationController
         end
       end
     else    
-      respond_to do |format|
-        format.html { redirect_to users_url + '/new', notice: 'The letters you entered does not match the image.' }
-        format.json { render json: @user, status: :created, location: @user }
-      end
+      redirect_to new_user_url, notice: 'The letters you entered does not match the image.'
     end
   end
 
@@ -77,15 +74,18 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to users_url, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+    if simple_captcha_valid?
+      respond_to do |format|
+        if @user.update_attributes(params[:user])
+          format.html { redirect_to users_url, notice: "User's information was successfully updated." }
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to edit_user_url(@user), notice: 'The letters you entered does not match the image.'
     end
   end
 
@@ -182,9 +182,7 @@ class UsersController < ApplicationController
           end
         end
       else
-        respond_to do |format|
-          format.html { redirect_to password_reset_url, notice: 'The letters you entered does not match the image.' }
-        end
+        redirect_to password_reset_url, notice: 'The letters you entered does not match the image.'
       end
     else
       @user = User.new

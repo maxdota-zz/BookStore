@@ -16,6 +16,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @users.each do |user| %>
@@ -40,6 +41,7 @@
             <%= link_to 'Activate', activate_path(user.tokenized_code) %>
         <% end %>
     </td>
+    <td><%= link_to 'Edit', edit_user_url(user) %></td>
     <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
