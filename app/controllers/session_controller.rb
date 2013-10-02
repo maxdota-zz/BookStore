@@ -17,7 +17,7 @@ class SessionController < ApplicationController
         session[:fail_attemp] = nil
         session[:user_id] = user.id
         session[:role] = user.role
-        redirect_to users_url, notice: "Welcome, " + session[:role] + " user " + user.username
+        redirect_to users_url, notice: "Welcome, " + session[:role] + " role, " + user.username
       end
     else
       redirect_to login_url, alert: "The letters you entered does not match the image."
@@ -27,7 +27,7 @@ class SessionController < ApplicationController
   def destroy
     session[:user_id] = nil
     session[:role] = nil
-    redirect_to users_url, notice: "Logged out"
+    redirect_to users_url, notice: "Logged out successfully."
   end
 
   def fail_attemp_add
