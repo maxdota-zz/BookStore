@@ -16,7 +16,10 @@
         <%= label_tag :password, 'Password:' %>
         <%= password_field_tag :password, params[:password] %>
       </div>
-
+      <% if session[:fail_attemp] && session[:fail_attemp] >= 3 %>
+        <br />
+        <%= show_simple_captcha %> <br />
+      <% end %>     
       <div>
         <%= submit_tag "Login" %>
       </div>

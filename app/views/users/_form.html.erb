@@ -10,6 +10,9 @@
       </ul>
     </div>
   <% end %>
+  <% if notice %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
 
   <div class="field">
     <%= f.label :full_name %><br />
@@ -39,6 +42,8 @@
     <%= f.label :birthday %><br />
     <%= f.date_select(:birthday, :start_year => 1920, :end_year => 2000) %>
   </div>
+  <br />
+  <%= show_simple_captcha %> <br />
   <div class="actions">
     <%= f.submit %>
   </div>

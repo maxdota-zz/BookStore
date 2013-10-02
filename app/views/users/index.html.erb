@@ -36,7 +36,7 @@
         <% end %>
     </td>
     <td>
-        <% if !user.tokenized_code.empty? %>
+        <% if !user.activation && !user.tokenized_code.empty? %>
             <%= link_to 'Activate', activate_path(user.tokenized_code) %>
         <% end %>
     </td>

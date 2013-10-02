@@ -9,3 +9,6 @@ en:
         create: "Register"
         edit: "Save"
         password_reset: "Send reset email"
+  simple_captcha:
+    placeholder: "Enter image's letters"    
+    label: "HUMAN AUTHENTICATION"
