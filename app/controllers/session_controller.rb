@@ -5,7 +5,7 @@ class SessionController < ApplicationController
   end
 
   def create    
-    if session[:fail_attemp] && session[:fail_attemp] >= 3 && simple_captcha_valid?
+    if !session[:fail_attemp] || session[:fail_attemp] < 3 || simple_captcha_valid?
       user = User.find_by_username(params[:username])
       if !user or !user.authenticate(params[:password])
         fail_attemp_add
