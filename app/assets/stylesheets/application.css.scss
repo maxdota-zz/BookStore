@@ -115,6 +115,14 @@
     color: #226;
     border-bottom: 3px dotted #77d;
   }
+
+  table {
+    border-collapse:collapse;
+  }
+  th, td {
+    border: 1px solid black;
+    text-align: center;
+  }
   .user {
     img {
       width: 30px;

@@ -4,7 +4,7 @@
 
 <h1>User List</h1>
 <table>
-  <tr>
+  <tr class="user">
     <th>Email address</th>
     <th>Username</th>
     <th>Phone</th>
@@ -30,14 +30,14 @@
     <td><%= user.role %></td>
     <td>
         <% if user.role == "admin" %>
-            <%= link_to image_tag("arrow_down.jpg"), users_url + "downgrade/" + user.id.to_s%>
+            <%= link_to image_tag("arrow_down.jpg"), downgrade_path(user.id.to_s) %>
         <% else %>
-            <%= link_to image_tag("arrow_up.jpeg"), users_url + "upgrade/" + user.id.to_s%>   
+            <%= link_to image_tag("arrow_up.jpeg"), upgrade_path(user.id.to_s) %>   
         <% end %>
     </td>
     <td>
         <% if !user.tokenized_code.empty? %>
-            <%= link_to 'Activate', users_url + '/' + user.tokenized_code %>
+            <%= link_to 'Activate', activate_path(user.tokenized_code) %>
         <% end %>
     </td>
     <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
