@@ -49,3 +49,4 @@ group :test do
 end
 
 gem 'ruby-gmail'
+gem "galetahub-simple_captcha", :require => "simple_captcha"

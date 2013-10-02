@@ -1,6 +1,8 @@
 require 'digest/md5'
 
 class UsersController < ApplicationController
+  include SimpleCaptcha::ControllerHelpers
+
   # GET /users
   # GET /users.json
   def index
@@ -47,19 +49,26 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
-    @user.account_creation_date = Date.current
-    @user.role = "normal"
-    @user.activation = false
-    @user.tokenized_code = Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s)
-    respond_to do |format|
-      if @user.save
-        @user.send_activation_email(@user.full_name, @user.username, @user.email_address, activate_url(@user.tokenized_code))
-        format.html { redirect_to users_url, notice: 'User was successfully created.' }
+    if simple_captcha_valid?
+      @user = User.new(params[:user])
+      @user.account_creation_date = Date.current
+      @user.role = "normal"
+      @user.activation = false
+      @user.tokenized_code = Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s)
+      respond_to do |format|
+        if @user.save
+          @user.send_activation_email(@user.full_name, @user.username, @user.email_address, activate_url(@user.tokenized_code))
+          format.html { redirect_to users_url, notice: 'User was successfully created.' }
+          format.json { render json: @user, status: :created, location: @user }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    else    
+      respond_to do |format|
+        format.html { redirect_to users_url + '/new', notice: 'The letters you entered does not match the image.' }
         format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -158,17 +167,23 @@ class UsersController < ApplicationController
 
   def password_reset
     if (request.post?)
-      @user_info = User.new(params[:user])
-      @user = User.find_by_username(@user_info.username)
-      respond_to do |format|
-        if !@user or @user.email_address != @user_info.email_address
-          format.html { redirect_to password_reset_url, notice: 'Incorrect username/email address combination.' }
-        elsif !@user.activation
-          format.html { redirect_to password_reset_url, notice: 'This account is not activated.' }          
-        else
-          @user.update_attribute("tokenized_code", Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s))
-          @user.send_password_reset_email(@user.full_name, @user.username, @user.email_address, reset_result_url(@user.tokenized_code))
-          format.html { redirect_to password_reset_url, notice: 'Please check your email to reset the password.' }
+      if simple_captcha_valid?
+        @user_info = User.new(params[:user])
+        @user = User.find_by_username(@user_info.username)
+        respond_to do |format|
+          if !@user or @user.email_address != @user_info.email_address
+            format.html { redirect_to password_reset_url, notice: 'Incorrect username/email address combination.' }
+          elsif !@user.activation
+            format.html { redirect_to password_reset_url, notice: 'This account is not activated.' }          
+          else
+            @user.update_attribute("tokenized_code", Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s))
+            @user.send_password_reset_email(@user.full_name, @user.username, @user.email_address, reset_result_url(@user.tokenized_code))
+            format.html { redirect_to password_reset_url, notice: 'Please check your email to reset the password.' }
+          end
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to password_reset_url, notice: 'The letters you entered does not match the image.' }
         end
       end
     else
