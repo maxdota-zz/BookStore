@@ -1,5 +1,15 @@
 Bookstore::Application.routes.draw do
 
+  
+  resources :category_items
+
+
+  resources :books
+
+
+  resources :categories
+
+
   controller :session do
     get 'login' => :new
     post 'login' => :create
@@ -16,6 +26,11 @@ Bookstore::Application.routes.draw do
     post 'user/passwordreset' => 'users#password_reset', as: 'password_reset'
     get 'user/passwordresetresult/:token' => 'users#password_reset_result', as: 'reset_result'
     post 'user/passwordresetresult' => 'users#password_reset_result', as: 'password_reset_result'
+  end
+  
+  controller :store do
+    get 'store/index' => 'store#index', as: 'store'
+    get 'store/index/:category' => 'store#index', as: 'store_browse'    
   end
 
   # The priority is based upon order of creation:
@@ -67,7 +82,7 @@ Bookstore::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'users#index'
+  root to: 'store#index', as: 'store'
 
   # See how all your routes lay out with "rake routes"
 

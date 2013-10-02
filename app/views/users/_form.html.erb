@@ -15,36 +15,36 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :full_name %><br />
+    <%= f.label :full_name %>
     <%= f.text_field :full_name %>
   </div>
   <div class="field">
-    <%= f.label :email_address %><br />
+    <%= f.label :email_address %>
     <%= f.text_field :email_address %>
   </div>
   <div class="field">
-    <%= f.label :username %><br />
+    <%= f.label :username %>
     <%= f.text_field :username %>
   </div>
   <div class="field">
-    <%= f.label :password %><br />
+    <%= f.label :password %>
     <%= f.password_field :password, size: 40 %>
   </div>
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, size: 40 %>
   </div>
   <div class="field">
-    <%= f.label :phone %><br />
+    <%= f.label :phone %>
     <%= f.text_field :phone %>
   </div>
   <div class="field">
-    <%= f.label :birthday %><br />
+    <%= f.label :birthday %>
     <%= f.date_select(:birthday, :start_year => 1920, :end_year => 2000) %>
   </div>
   <br />
   <%= show_simple_captcha %> <br />
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: "btn btn-info" %>
   </div>
 <% end %>
