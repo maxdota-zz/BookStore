@@ -16,3 +16,14 @@ User.create(username: 'n',
   phone: '0123456789',
   full_name: 'Nguyen Hong Ngoc'
   )
+
+User.create(username: 'admin',
+  password_digest: '$2a$10$7AUsOhbKHCc2Q.5dvJy97OWYzz.zPd5wNyQSKGqPBFzAyM167pWUm',
+  email_address: 'ngoc.nguyen@stanyangroup.com',
+  birthday: Date.parse('1992-09-30'),
+  account_creation_date: Date.parse('2013-09-30'),
+  activation: true,
+  role: 'admin',
+  phone: '0123456789',
+  full_name: 'Nguyen Hong Ngoc'
+  )
