@@ -25,6 +25,8 @@
     <%= image_tag(book.photo_url) %>
     <h3><%= book.title %></h3>
     <p><%= sanitize(book.description) %></p>
- 
+    <div class="price_line">
+      <span class="price"><%= number_to_currency(book.unit_price) %></span>
+    </div>
   </div>
 <% end %>
