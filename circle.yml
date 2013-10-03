@@ -2,3 +2,4 @@ test:
   override:
     - rake db:migrate RAILS_ENV=test
     - rspec spec
+    - cucumber

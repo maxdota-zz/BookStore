@@ -113,12 +113,8 @@ class CategoriesController < ApplicationController
   end
   
   def book_display
-    @category = Category.find(params[:id])    
-    @items = CategoryItem.all.find_all{|item| item.category_id == @category.id }
-    @category_books = []      
-    @items.each do |item|
-      @category_books << Book.find_by_id(item.book_id)
-    end
+    @category = Category.find(params[:id])   
+    @category_books = Book.all.find_all{|book| (book.categories.include? Category.find(@category.id)) }
     @other_books = []
     Book.all.each do |book|
       if !@category_books.any?{ |b| b.id == book.id }

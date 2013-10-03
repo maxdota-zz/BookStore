@@ -38,6 +38,28 @@
           <li><%= link_to 'Forgot password?', password_reset_url %></li>
         <% end %>
       </ul>
+      <h3 class="sidebar-title">Search</h3>
+          <%= form_tag(book_search_url, class: "better-search-bar option") do |f| %>
+          Search by:
+          <div class="right">
+            <div class="btn-group" data-toggle="buttons">
+              <label>
+                <input type="radio" name="search_type" id="pig" value="author"> Author Name
+              </label>
+              <label>
+                <input type="radio" name="search_type" id="splunk" checked=true value="title"> Title
+              </label>
+            </div>    
+          </div>
+            <%= search_field_tag :search_input, "", class: "search-query span2" %>
+            <button class='btn right'>
+              <i class='icon-search'></i>
+            </button>
+            Choose a category: 
+            <% @options = Category.all.map{|c| [c.name, c.id]} %>
+            <% @options << ["All categories","all"] %>
+            <%= select_tag :search_category, options_for_select(@options, "all") %>
+          <% end %>
     </div>
     <div id="main">
       <%= yield %>

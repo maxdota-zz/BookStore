@@ -6,14 +6,13 @@ Bookstore::Application.routes.draw do
 
   resources :books
 
-
   resources :categories
   controller :categories do
     get 'category/up/:id' => 'categories#up', as: 'category_up'
     get 'category/down/:id' => 'categories#down', as: 'category_down'
     get 'category/book_display/:id' => 'categories#book_display', as: 'category_book_display' 
     get 'category/book_add/:category_id/:book_id' => 'categories#book_add', as: 'category_book_add' 
-    get 'category/book_remove/:category_id/:book_id' => 'categories#book_remove', as: 'category_book_remove' 
+    get 'category/book_remove/:category_id/:book_id' => 'categories#book_remove', as: 'category_book_remove'
   end
 
 
@@ -38,6 +37,7 @@ Bookstore::Application.routes.draw do
   controller :store do
     get 'store/index' => 'store#index', as: 'store'
     get 'store/index/:category' => 'store#index', as: 'store_browse'    
+    post 'store/search' => 'store#book_search', as: 'book_search'    
   end
 
   # The priority is based upon order of creation:
