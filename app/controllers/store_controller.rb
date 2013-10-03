@@ -10,10 +10,10 @@ class StoreController < ApplicationController
     @items = CategoryItem.all.find_all{|item| item.category_id.to_s == @category_id }
     @books = []    
     @items.each do |item|
-      puts "Item id: " + item.id
+      puts "Item id: " + item.id.to_s
       @books << Book.find_by_id(item.book_id)
     end
     puts "BOOK"
-    puts books
+    puts @books.inspect
   end
 end
