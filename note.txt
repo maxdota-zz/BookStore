@@ -1,0 +1,1 @@
++ log in after activation and password reset

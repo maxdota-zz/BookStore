@@ -20,11 +20,8 @@
 <p id="notice"><%= notice %></p>
 <% end %>
 
-    <% puts "BOOK" %>
-    <% puts @books.inspect %>
 <% @books.each do |book| %>
   <div class="entry">
-    <% puts book.inspect %>
     <%= image_tag(book.photo_url) %>
     <h3><%= book.title %></h3>
     <p><%= sanitize(book.description) %></p>

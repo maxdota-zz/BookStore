@@ -27,6 +27,7 @@ User.create(username: 'n',
   full_name: 'Nguyen Hong Ngoc'
   )
 
+Book.delete_all
 Book.create(title: 'CoffeeScript',
   description: 
     %{<p>
@@ -37,6 +38,9 @@ Book.create(title: 'CoffeeScript',
   while writing clearer, cleaner, and safer code.
       </p>},
   photo_url:   'cs.jpg',    
+  author_name: 'Someone',
+  publisher_name: 'East Agile',
+  published_date: Date.parse('2013-02-15'),
   unit_price: 36.00)
 
 Book.create(title: 'Programming Ruby 1.9',
@@ -47,6 +51,9 @@ Book.create(title: 'Programming Ruby 1.9',
         you should add Ruby to your toolbox.
       </p>},
   photo_url: 'ruby.jpg',
+  author_name: 'Somebody',
+  publisher_name: 'East Agile',
+  published_date: Date.parse('1990-06-11'),
   unit_price: 49.95)
 
 Book.create(title: 'Rails Test Prescriptions',
@@ -60,7 +67,53 @@ Book.create(title: 'Rails Test Prescriptions',
         including Cucumber, Shoulda, Machinist, Mocha, and Rcov.
       </p>},
   photo_url: 'rtp.jpg',
+  author_name: 'Simon',
+  publisher_name: 'EA',
+  published_date: Date.parse('2010-12-22'),
   unit_price: 34.95)
+
+Book.create(title: 'Blubber',
+  description: 
+    %{<p>
+        Blubber is a good name for her, the note from Wendy says about Linda. Jill
+        crumples it up and leaves it on the corner of her desk. She doesn't want to
+        think about Linda or her dumb report on the whale just now. Jill wants to
+        think about Halloween.
+      </p>},
+  photo_url: 'blub.jpg',
+  author_name: 'Judy Blume',
+  publisher_name: 'Yearling',
+  published_date: Date.parse('1986-09-05'),
+  unit_price: 12.05)
+
+Book.create(title: 'The Cay',
+  description: 
+    %{<p>
+        Phillip is excited when the Germans invade the small island of Curaçao. War
+        has always been a game to him, and he’s eager to glimpse it firsthand–until
+        the freighter he and his mother are traveling to the United States on is
+        torpedoed.
+      </p>},
+  photo_url: 'cay.jpg',
+  author_name: 'Theodore Taylor',
+  publisher_name: 'Yearling',
+  published_date: Date.parse('2002-05-28'),
+  unit_price: 7.24)
+
+Book.create(title: 'Radiance',
+  description: 
+    %{<p>
+        Ever's younger sister, Riley, has crossed the bridge into the afterlife and
+        has been assigned the task of enticing Radiant Boy, an elusive soul who's been
+        haunting a castle in England for centuries, to cross the bridge into the
+        afterlife with her.
+      </p>},
+  photo_url: 'rad.jpg',
+  author_name: 'Alyson Noël',
+  publisher_name: 'Square Fish',
+  published_date: Date.parse('2010-08-31'),
+  unit_price: 6.78)
+
 
 Category.create(name: "Romance",
   sort_order: 2
