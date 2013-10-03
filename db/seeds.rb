@@ -5,16 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.create(username: 'nn',
-  password_digest: '$2a$10$7AUsOhbKHCc2Q.5dvJy97OWYzz.zPd5wNyQSKGqPBFzAyM167pWUm',
-  email_address: 'ngoc.nguyen@stanyangroup.com',
-  birthday: Date.parse('1992-09-30'),
-  account_creation_date: Date.parse('2013-09-30'),
-  activation: true,
-  role: 'normal',
-  phone: '0123456789',
-  full_name: 'Nguyen Hong Ngoc'
-  )
 
 User.create(username: 'n',
   password_digest: '$2a$10$7AUsOhbKHCc2Q.5dvJy97OWYzz.zPd5wNyQSKGqPBFzAyM167pWUm',
@@ -23,6 +13,17 @@ User.create(username: 'n',
   account_creation_date: Date.parse('2013-09-30'),
   activation: true,
   role: 'admin',
+  phone: '0123456789',
+  full_name: 'Nguyen Hong Ngoc'
+  )
+
+User.create(username: 'nn',
+  password_digest: '$2a$10$7AUsOhbKHCc2Q.5dvJy97OWYzz.zPd5wNyQSKGqPBFzAyM167pWUm',
+  email_address: 'ngoc.nguyen@stanyangroup.com',
+  birthday: Date.parse('1992-09-30'),
+  account_creation_date: Date.parse('2013-09-30'),
+  activation: true,
+  role: 'normal',
   phone: '0123456789',
   full_name: 'Nguyen Hong Ngoc'
   )
@@ -89,8 +90,8 @@ Book.create(title: 'Blubber',
 Book.create(title: 'The Cay',
   description: 
     %{<p>
-        Phillip is excited when the Germans invade the small island of Curaçao. War
-        has always been a game to him, and he’s eager to glimpse it firsthand–until
+        Phillip is excited when the Germans invade the small island of Curacao. War
+        has always been a game to him, and he's eager to glimpse it firsthand until
         the freighter he and his mother are traveling to the United States on is
         torpedoed.
       </p>},
@@ -109,11 +110,10 @@ Book.create(title: 'Radiance',
         afterlife with her.
       </p>},
   photo_url: 'rad.jpg',
-  author_name: 'Alyson Noël',
+  author_name: 'Alyson Noel',
   publisher_name: 'Square Fish',
   published_date: Date.parse('2010-08-31'),
   unit_price: 6.78)
-
 
 Category.create(name: "Romance",
   sort_order: 2
@@ -131,17 +131,4 @@ Category.create(name: "Adventure",
   sort_order: 4
   )
 
-CategoryItem.create(category_id: 2,
-  book_id: 2)
-CategoryItem.create(category_id: 2,
-  book_id: 4)
-CategoryItem.create(category_id: 1,
-  book_id: 5)
-CategoryItem.create(category_id: 2,
-  book_id: 5)
-CategoryItem.create(category_id: 3,
-  book_id: 6)
-CategoryItem.create(category_id: 4,
-  book_id: 3)
-CategoryItem.create(category_id: 5,
-  book_id: 1)
+CategoryItem.delete_all

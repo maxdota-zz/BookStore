@@ -1,5 +1,8 @@
-<h1>Listing books</h1>
+<h1>Book List</h1>
 
+  <% if notice %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
 <table>
 
 <% @books.each do |book| %>
@@ -12,9 +15,8 @@
       </dl>
     </td>
     <td class="list_actions">
-      <%= link_to 'Show', book %><br/>
-      <%= link_to 'Edit', edit_book_path(book) %><br/>
-      <%= link_to 'Destroy', book, confirm: 'Are you sure?', method: :delete %>
+      <%= link_to 'Detail', book %><br/>
+      <%= link_to 'Delete', book, confirm: 'Are you sure?', method: :delete %>
     </td>
   </tr>
 <% end %>
