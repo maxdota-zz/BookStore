@@ -28,7 +28,9 @@
           <li><%= link_to 'Log out', logout_url, method: :delete %></li>
           <% if session[:role] == "admin" %>
           <li><h3>Admin Panel</h3></li>      
-          <li><%= link_to raw('User Test List'), users_url %></li>
+          <li><%= link_to raw('User List'), users_url %></li>
+          <li><%= link_to raw('Book List'), books_url %></li>
+          <li><%= link_to raw('Category List'), categories_url %></li>
           <% end %>
         <% else %>
           <li><%= link_to 'Log In', login_url %></li>

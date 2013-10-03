@@ -8,6 +8,13 @@ Bookstore::Application.routes.draw do
 
 
   resources :categories
+  controller :categories do
+    get 'category/up/:id' => 'categories#up', as: 'category_up'
+    get 'category/down/:id' => 'categories#down', as: 'category_down'
+    get 'category/book_display/:id' => 'categories#book_display', as: 'category_book_display' 
+    get 'category/book_add/:category_id/:book_id' => 'categories#book_add', as: 'category_book_add' 
+    get 'category/book_remove/:category_id/:book_id' => 'categories#book_remove', as: 'category_book_remove' 
+  end
 
 
   controller :session do

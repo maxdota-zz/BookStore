@@ -240,3 +240,51 @@
     }
   }
 }
+
+.categories {
+  h1 {
+    margin: 0;
+    padding-bottom: 0.5em;
+    font:  150% sans-serif;
+    color: #226;
+    border-bottom: 3px dotted #77d;
+  }
+
+  table {
+    border-collapse:collapse;
+  }
+  th, td {
+    border: 1px solid black;
+    text-align: center;
+  }
+  .category {
+    img {
+      width: 30px;
+      height: 30px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+  }
+  
+  .list_image {
+    width:  100px;
+    height: 150px;
+  }
+  
+  .list_text {
+    font-size: 80%;
+    font-weight: bold;
+  }
+  
+  .list {
+    width: 240px;
+    height: 200px;
+    float: left;
+    text-align: center;
+  }
+}
+
+.better_field {
+  width: 600px;
+  height: 150px;
+}

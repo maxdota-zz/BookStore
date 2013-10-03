@@ -1,0 +1,30 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<div class="container-fluid fill">
+    <div class="row-fluid">
+      <h1>Category <%= @category.name %></h1>
+      <p>The books that belong to this category is in the right panel.</p>
+        <div class="span5 hero-unit filler">
+          Add book to this category by clicking + <br />
+          <% @other_books.each do |book| %>
+          <div class="list">
+            <%= link_to('+', category_book_add_url(@category.id, book.id), class: "btn btn-info") %>
+            <%= image_tag(book.photo_url, class: "list_image") %>
+            <p class="list_text"><%= book.title %></p>
+          </div>
+          <% end %>
+        </div>
+        <div class="span5 hero-unit filler">
+          Remove book from this category by clicking -<br />          
+          <% @category_books.each do |book| %>
+          <div class="list">
+            <%= link_to('-', category_book_remove_url(@category.id, book.id), class: "btn btn-info") %>
+            <%= image_tag(book.photo_url, class: "list_image") %>
+            <p class="list_text"><%= book.title %></p>
+          </div>
+          <% end %>
+        </div>
+    </div>
+</div>

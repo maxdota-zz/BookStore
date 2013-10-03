@@ -1,9 +1,8 @@
+<h1>User List</h1>
 <% if notice %>
 <p id="notice"><%= notice %></p>
 <% end %>
-    
-<h1>User List</h1>
-<table>
+<table width="100%">
   <tr class="user">
     <th>Email address</th>
     <th>Username</th>
@@ -11,10 +10,8 @@
     <th>Full name</th>
     <th>Birthday</th>
     <th>Account creation date</th>
-    <th>Activation</th>
-    <th>Role</th>
-    <th></th>
-    <th></th>
+    <th colspan="2">Activation</th>
+    <th colspan="2">Role</th>
     <th></th>
     <th></th>
   </tr>
@@ -28,17 +25,17 @@
     <td><%= user.birthday %></td>
     <td><%= user.account_creation_date %></td>
     <td><%= user.activation %></td>
+    <td>
+        <% if !user.activation && !user.tokenized_code.empty? %>
+            <%= link_to 'Activate', activate_path(user.tokenized_code) %>
+        <% end %>
+    </td>
     <td><%= user.role %></td>
     <td>
         <% if user.role == "admin" %>
             <%= link_to image_tag("arrow_down.jpg"), downgrade_path(user.id.to_s) %>
         <% else %>
             <%= link_to image_tag("arrow_up.jpeg"), upgrade_path(user.id.to_s) %>   
-        <% end %>
-    </td>
-    <td>
-        <% if !user.activation && !user.tokenized_code.empty? %>
-            <%= link_to 'Activate', activate_path(user.tokenized_code) %>
         <% end %>
     </td>
     <td><%= link_to 'Edit', edit_user_url(user) %></td>

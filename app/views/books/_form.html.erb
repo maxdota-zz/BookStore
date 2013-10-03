@@ -12,40 +12,32 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :title %><br />
+    <%= f.label :title %>
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "better_field" %>
   </div>
   <div class="field">
-    <%= f.label :author_name %><br />
+    <%= f.label :author_name %>
     <%= f.text_field :author_name %>
   </div>
   <div class="field">
-    <%= f.label :publisher_name %><br />
+    <%= f.label :publisher_name %>
     <%= f.text_field :publisher_name %>
   </div>
   <div class="field">
-    <%= f.label :published_date %><br />
-    <%= f.date_select :published_date %>
+    <%= f.label :published_date %>
+    <%= f.date_select(:published_date, :start_year => 1800, :end_year => 2013) %>
   </div>
   <div class="field">
-    <%= f.label :unit_price %><br />
+    <%= f.label :unit_price %>
     <%= f.text_field :unit_price %>
   </div>
   <div class="field">
-    <%= f.label :photo_url %><br />
+    <%= f.label :photo_url %>
     <%= f.text_field :photo_url %>
-  </div>
-  <div class="field">
-    <%= f.label :total_rating_value %><br />
-    <%= f.text_field :total_rating_value %>
-  </div>
-  <div class="field">
-    <%= f.label :total_rating_count %><br />
-    <%= f.text_field :total_rating_count %>
   </div>
   <div class="actions">
     <%= f.submit %>

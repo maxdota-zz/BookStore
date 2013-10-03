@@ -41,6 +41,8 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = Book.new(params[:book])
+    @book.total_rating_value = 0
+    @book.total_rating_count = 0
 
     respond_to do |format|
       if @book.save
@@ -76,8 +78,11 @@ class BooksController < ApplicationController
     @book.destroy
 
     respond_to do |format|
-      format.html { redirect_to books_url }
-      format.json { head :no_content }
+      if @book.errors.any?
+        format.html { redirect_to books_url, notice: @book.errors.full_messages[0] }
+      else
+        format.html { redirect_to books_url }
+      end
     end
   end
 end
