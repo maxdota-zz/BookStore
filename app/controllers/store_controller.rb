@@ -13,7 +13,5 @@ class StoreController < ApplicationController
       puts "Item id: " + item.id.to_s
       @books << Book.find_by_id(item.book_id)
     end
-    puts "BOOK"
-    puts @books.inspect
   end
 end
