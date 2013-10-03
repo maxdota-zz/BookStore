@@ -7,10 +7,23 @@ class StoreController < ApplicationController
       @category_id = @categories[0].id.to_s
     end
     
-    @items = CategoryItem.all.find_all{|item| item.category_id.to_s == @category_id }
-    @books = []    
-    @items.each do |item|
-      @books << Book.find_by_id(item.book_id)
+    @books = Book.all.find_all{|book| (book.categories.include? Category.find(@category_id)) }
+  end
+  
+  def book_search
+    if params[:search_category] == "all"
+      if params[:search_type] == "title"
+        @books = Book.all.find_all{|book| !(book.title =~ /#{params[:search_input]}/).nil? }
+      else
+        @books = Book.all.find_all{|book| !(book.author_name =~ /#{params[:search_input]}/).nil? }
+      end
+    else      
+      @categories = [Category.find(params[:search_category])]
+      if params[:search_type] == "title"
+        @books = Book.all.find_all{|book| !(book.title =~ /#{params[:search_input]}/).nil? && (book.categories.include? Category.find(params[:search_category])) }
+      else        
+        @books = Book.all.find_all{|book| !(book.author_name =~ /#{params[:search_input]}/).nil? && (book.categories.include? Category.find(params[:search_category])) }
+      end
     end
   end
 end
