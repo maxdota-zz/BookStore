@@ -21,5 +21,10 @@
 <% end %>
 
 <% @books.each do |book| %>
-
+  <div class="entry">
+    <%= image_tag(book.photo_url) %>
+    <h3><%= book.title %></h3>
+    <p><%= sanitize(book.description) %></p>
+ 
+  </div>
 <% end %>
