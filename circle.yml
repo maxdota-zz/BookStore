@@ -1,5 +1,5 @@
 test:
   override:
     - rake db:migrate RAILS_ENV=test
+    - bundle exec cucumber features/
     - rspec spec
-    - cucumber
