@@ -2,7 +2,7 @@ require 'gmail'
 
 class User < ActiveRecord::Base
   attr_accessible :username, :role, :activation, :account_creation_date, :birthday, :email_address, :full_name, :password_digest, :phone, :password, :password_confirmation, :tokenized_code
-  validates :email_address, :full_name, :username, presence: true
+  validates :email_address, :full_name, :username, :phone, presence: true
   validates :username, uniqueness: true
   validates :email_address, format: {
     with: %r{\w+@\w+\.com$}i,

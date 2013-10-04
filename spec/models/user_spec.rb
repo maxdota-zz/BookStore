@@ -3,35 +3,15 @@ require 'spec_helper'
 describe User do
   before do
     @user = FactoryGirl.create(:user)
-  end
-
-  it "has a valid factory" do
-    @user.should be_valid
-  end
-
-  it "is invalid without a username" do
-    @user.username = nil
-    @user.should_not be_valid
-  end
-
-  it "is invalid without a full name" do
-    @user.full_name = nil
-    @user.should_not be_valid
-  end
-
-  it "is invalid without a password" do
-    @user.password_digest = nil
-    @user.should_not be_valid
-  end
-
-  it "is invalid without an email address" do
-    @user.email_address = nil
-    @user.should_not be_valid
-  end
-
-  it "is invalid without a phone number" do
-    @user.phone = nil
-    @user.should_not be_valid
+  end  
+  
+  describe "Validations" do    
+    it {should validate_presence_of :username}
+    it {should validate_uniqueness_of :username}
+    it {should validate_presence_of :full_name}
+    it {should validate_presence_of :password_digest}
+    it {should validate_presence_of :email_address}
+    it {should validate_presence_of :phone}
   end
 
   it "is invalid with a phone number contains letter" do

@@ -1,7 +1,7 @@
 class Book < ActiveRecord::Base
   attr_accessible :author_name, :description, :photo_url, :published_date, :publisher_name, :title, :total_rating_count, :total_rating_value, :unit_price
 
-  validates :author_name, :description, :photo_url, :published_date, :publisher_name, :title, presence: true
+  validates :author_name, :description, :photo_url, :published_date, :publisher_name, :title, :unit_price, presence: true
   before_destroy :ensure_not_referenced_by_any_category_item
   has_many :category_items
   has_many :categories, through: :category_items

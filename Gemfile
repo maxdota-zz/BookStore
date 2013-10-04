@@ -47,6 +47,8 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem "faker", "~> 1.2.0"
+  gem 'simplecov', :require => false
+  gem "shoulda", :require => false
 end
 
 gem 'ruby-gmail'
