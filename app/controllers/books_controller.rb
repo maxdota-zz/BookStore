@@ -15,8 +15,11 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @average_rating = @book.total_rating_count == 0 ? 0 : @book.total_rating_value / @book.total_rating_count
-    puts "TESTING HEERE"
-    puts @average_rating
+    @rating = @average_rating.round
+    if session[:user_id]
+      @comment = Comment.new
+    end
+    @comments = @book.comments.paginate page: params[:page], per_page: 5
 
     respond_to do |format|
       format.html # show.html.erb

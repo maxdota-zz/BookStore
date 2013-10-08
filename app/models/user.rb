@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
     with: %r{0[0-9][0-9][0-9][0-9][0-9][0-9][0-9]+}i,
     message: 'must be in format 0xxxxxxxx (all digits)'
   }
+  
+  has_many :comments, :dependent => :destroy
 
   has_secure_password
   after_destroy :ensure_an_admin_remains

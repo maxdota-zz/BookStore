@@ -6,14 +6,7 @@
 
 <%= image_tag(@book.photo_url, :class => 'detail_image') %>
 by <b><%= @book.author_name %></b> <br />
-<div class="star static">
-  <div class="star-filled left">
-    <b></b>
-  </div>
-  <div class="star-empty">
-    <b></b>
-  </div>
-</div>
+<%= render 'comments/stars' %>
 <div class="left">Average Rating: <%= number_with_precision(@average_rating, precision: 2) %></div>   
 <p>| Rating count: <%= number_with_precision(@book.total_rating_count, precision: 0)%></p>
 <p>
@@ -36,3 +29,43 @@ by <b><%= @book.author_name %></b> <br />
 </p>
 
 <%= link_to 'Back', books_path %>
+<h3>Comments</h3>
+
+<% @comments.each do |comment| %>
+  <div class="comment">
+    <div>
+      <% if session[:role] = "admin" %>
+        <div class="right">          
+          <%= link_to 'Delete comment', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </div>
+      <% end %>
+      User <b><%=comment.user.username%></b> rated 
+      <% @rating = comment.rating %>
+      <%= render 'comments/stars' %>
+      on <%= comment.date %>
+    </div>
+    <b>His/her comment: </b> <br />
+    <%= comment.content %>
+  </div>
+<% end %>
+<p> <%= will_paginate @comments %> </p>
+
+<% if @comment %>
+<div class="comment">
+  <%= form_for(@comment) do |f| %>
+    <div class="field">
+      <div class="left">
+      <%= f.label "Your comment: "%><br />
+      <%= f.label "Rating" %>
+      <%= f.select :rating, %w[1 2 3 4 5] %>
+      <%= f.hidden_field :book_id, :value => @book.id %>
+    </div>
+      <%= f.text_area :content, :class => "better_field" %>
+    </div>
+    
+    <div class="actions">
+      <%= f.submit "Submit", :class => "btn btn-info" %>
+    </div>
+  <% end %>  
+</div>
+<% end %>

@@ -7,7 +7,18 @@ class Book < ActiveRecord::Base
   before_create :set_defaults
   has_many :category_items
   has_many :categories, :through => :category_items
-
+  has_many :comments, :dependent => :destroy
+  
+  def add_rate(rate)
+    self.update_attribute("total_rating_count", total_rating_count + 1)
+    self.update_attribute("total_rating_value", total_rating_value + rate)
+  end
+  
+  def remove_rate(rate)
+    self.update_attribute("total_rating_count", total_rating_count - 1)
+    self.update_attribute("total_rating_value", total_rating_value - rate)
+  end
+  
   private
   # ensure that there are no category items referencing this book
   def ensure_not_referenced_by_any_category_item

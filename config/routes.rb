@@ -1,6 +1,9 @@
 Bookstore::Application.routes.draw do
 
   
+  resources :comments
+
+
   resources :category_items
 
 

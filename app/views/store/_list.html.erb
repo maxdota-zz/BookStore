@@ -26,6 +26,7 @@
     <p><%= sanitize(book.description) %></p>
     <div class="price_line">
       <span class="price"><%= number_to_currency(book.unit_price) %></span>
+      <span><%= link_to 'Detail', book %></span>
     </div>
   </div>
 <% end %>
