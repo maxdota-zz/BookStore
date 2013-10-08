@@ -20,17 +20,19 @@ Feature:  Anonymous users can login
     And the activation status is "activated"
     And the role is "normal"
     And the other's information of this user is auto-gererated
-    When I go to the login page
 
   Scenario Outline: login account
+    When I go to the login page
     Given I fill in username with <username>
     And I fill in password with <password>
+    And I press the Login button
     Then The notice display should be <notice>
 
     Scenarios: valid account
       | username            | password | notice                                        |
       | newuser             | u1       | Please activate your account. Contact an admin if you can't get the activation email in your inbox                                   |
-      | normaluser          | u2       | Welcome, normal role, normaluser              |
-      | admin               | a        | Welcome, admin role, admin                    |
+      | normaluser          | u2       | Welcome, normaluser (normal role)              |
+      | admin               | a        | Welcome, admin (admin role)                    |
+      | fake                | F        | Invalid username/password combination          |
 
 

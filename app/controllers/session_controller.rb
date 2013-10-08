@@ -9,7 +9,7 @@ class SessionController < ApplicationController
       user = User.find_by_username(params[:username])
       if !user || !user.authenticate(params[:password])
         fail_attemp_add
-        redirect_to login_url, :alert => "Invalid username/password combination"
+        redirect_to login_url, :alert => "Invalid username/password combination."
       elsif !user.activation
         session[:fail_attemp] = nil
         redirect_to login_url, :alert => "Please activate your account. Contact an admin if you can't get the activation email in your inbox"      
@@ -17,7 +17,7 @@ class SessionController < ApplicationController
         session[:fail_attemp] = nil
         session[:user_id] = user.id
         session[:role] = user.role
-        redirect_to users_url, notice: "Welcome, #{user.username} (#{session[:role]} role)"
+        redirect_to users_url, :notice => "Welcome, #{user.username} (#{session[:role]} role)"
       end
     else
       redirect_to login_url, :alert => "The letters you entered does not match the image."

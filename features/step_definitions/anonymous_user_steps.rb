@@ -11,10 +11,10 @@ Then /^I should see the banner with logo and bookshop name$/ do
 end
 
 Then /^I should see the side bar with all tabs$/ do
-  page.body.should include("<li><a href=\"" + store_url + "\"><i class=\"icon-home icon-white\"></i> Home</a></li>")
-  page.body.should include("<li><a href=\"" + login_url + "\">Log In</a></li>")
-  page.body.should include("<li><a href=\"" + new_user_url + "\">Register</a></li>")
-  page.body.should include("<li><a href=\"" + password_reset_url + "\">Forgot password?</a></li>")
+  page.body.should include("<li><a href=\"#{store_url}\"><i class=\"icon-home icon-white\"></i> Home</a></li>")
+  page.body.should include("<li><a href=\"#{login_url}\">Log In</a></li>")
+  page.body.should include("<li><a href=\"#{new_user_url}\">Register</a></li>")
+  page.body.should include("<li><a href=\"#{password_reset_url}\">Forgot password?</a></li>")
 end
 
 Then /^I should see the search panel$/ do
@@ -48,14 +48,15 @@ Given (/^the role is "([^\"]*)"$/) do |role|
 end
 
 Given (/I fill in ([^\"]*) with ([^\"]*)$/) do |field, value|
-  puts field
-  puts "TESTING HEEE RE"
-  page.should have_content("Test")
-  fill_in(field, :with => value)
+  fill_in field, :with => value
 end
 
-Then (/^The notice display should be ([^\"]*)$/) do |notice|
-  
+Given (/I press the ([^\"]*) button$/) do |button|
+  click_button button
+end
+
+Then (/^The notice display should be ([^\"]*)$/) do |notice|  
+  page.should have_content(notice)
 end
     
 Given (/^the other's information of this user is auto-gererated$/) do

@@ -24,10 +24,11 @@ class UsersController < ApplicationController
       @user.update_attribute("tokenized_code", "")
       session[:role] = @user.role
       session[:user_id] = @user.id 
+      flash[:notice] = "Activation completed."
     end
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html 
       format.json { render :json => @user, :status => :created, :location => @user }
     end
   end
@@ -56,7 +57,7 @@ class UsersController < ApplicationController
       respond_to do |format|
         if @user.save
           @user.send_activation_email(@user.full_name, @user.username, @user.email_address, activate_url(@user.tokenized_code))
-          format.html { redirect_to users_url, :notice => "User was successfully created." }
+          format.html { redirect_to login_url, :notice => "Registration completed. Please check your email to activate the account." }
           format.json { render :json => @user, :status => :created, :location => @user }
         else
           format.html { render :action => "new" }
@@ -64,7 +65,7 @@ class UsersController < ApplicationController
         end
       end
     else    
-      redirect_to new_user_url, :notice => "The letters you entered does not match the image."
+      redirect_to new_user_url, :notice => "The letters you entered do not match the image."
     end
   end
 
@@ -144,6 +145,7 @@ class UsersController < ApplicationController
         @resetting = true
         session[:code] = @code
         session[:temp_username] = @user.username
+        flash[:notice] = "Correct token code."
       end
     else
       @user_info = User.new(params[:user])
