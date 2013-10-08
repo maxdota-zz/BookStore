@@ -5,6 +5,7 @@
   <% end %>
 <table>
 
+<%= link_to '+ New Book', new_book_path %>
 <% @books.each do |book| %>
   <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
     <td><%= image_tag(book.photo_url, :class => 'list_image') %></td>
@@ -24,5 +25,4 @@
 
 <br />
 
-<%= link_to 'New Book', new_book_path %>
 <p> <%= will_paginate @books %> </p>

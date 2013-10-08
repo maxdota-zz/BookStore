@@ -1,0 +1,13 @@
+<div class="star static">
+  <div class="star-filled left">
+    <% @rating.times do |_| %>
+    <b></b>
+    <% end %>
+  </div>
+  <div class="star-empty left margin-left">
+    <% (5 - @rating).times do |_| %>
+    <b></b>
+    <% end %>
+  </div>
+</div>
+<br />

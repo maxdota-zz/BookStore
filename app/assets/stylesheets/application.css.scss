@@ -190,32 +190,22 @@
   .list_line_odd {
     background:   #f8b0f8;
   }
-  
-  
-  // .star-rating s:hover {
-  //   color: yellow;
-  // }
-  // .star-rating s,
-  // .star-rating {
-  //   padding: 2px;
-  // }
-  // .star-rating s:hover:before{
-  //   content: "\2605";
-  // }
-  .star-rating s:before {
-    content: "\2606"; 
-  }
-  
+    
   .star {
-    color: blue
+    color: blue;
+  } 
+  
+  .margin-left {
+    margin-left: 3px;
   }
   
   .star-empty b:before{
-    content: "\2606"
+    content: "\2606";
   }  
   .star-filled b:before{
     content: "\2605"
   }
+  
 }
 
 .store {
@@ -319,7 +309,7 @@
 
 .better_field {
   width: 600px;
-  height: 150px;
+  height: 100px;
 }
 
 .better-search-bar {
@@ -350,4 +340,11 @@
 
 .sidebar-title {
   color: #FFD700
+}
+
+.comment {
+  margin-left: 0px;
+  padding-left: 0px;
+  height: 180px;
+  width: 800px;
 }
