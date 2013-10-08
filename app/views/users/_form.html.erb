@@ -28,11 +28,11 @@
   </div>
   <div class="field">
     <%= f.label :password %>
-    <%= f.password_field :password, size: 40 %>
+    <%= f.password_field :password, :size => 40 %>
   </div>
   <div class="field">
     <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation, size: 40 %>
+    <%= f.password_field :password_confirmation, :size => 40 %>
   </div>
   <div class="field">
     <%= f.label :phone %>
@@ -45,6 +45,6 @@
   <br />
   <%= show_simple_captcha %> <br />
   <div class="actions">
-    <%= f.submit class: "btn btn-info" %>
+    <%= f.submit :class => "btn btn-info" %>
   </div>
 <% end %>

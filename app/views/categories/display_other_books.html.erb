@@ -1,0 +1,19 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>Category <%= @category.name %></h1>
+These books are not in the category <br />
+Add them to this category by clicking + <br />
+<div class="container">
+  <% @other_books.each do |book| %>
+    <div class="list">
+      <%= link_to('+', category_add_book_url(@category.id, book.id), class: "btn btn-info") %>
+      <%= image_tag(book.photo_url, :class => "list_image") %>
+      <p class="list_text"><%= book.title %></p>
+    </div>
+  <% end %>
+</div>
+<p> <%= will_paginate @other_books %> </p>
+
+<%= link_to 'Back', categories_path %>

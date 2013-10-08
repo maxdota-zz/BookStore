@@ -1,22 +1,27 @@
-<p id="notice"><%= notice %></p>
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
 
+<h1><%= @book.title %></h1>
+
+<%= image_tag(@book.photo_url, :class => 'detail_image') %>
+by <b><%= @book.author_name %></b> <br />
+<div class="star static">
+  <div class="star-filled left">
+    <b></b>
+  </div>
+  <div class="star-empty">
+    <b></b>
+  </div>
+</div>
+<div class="left">Average Rating: <%= number_with_precision(@average_rating, precision: 2) %></div>   
+<p>| Rating count: <%= number_with_precision(@book.total_rating_count, precision: 0)%></p>
 <p>
-  <b>Title:</b>
-  <%= @book.title %>
+  <%= strip_tags(@book.description) %>
 </p>
 
 <p>
-  <b>Description:</b>
-  <%= @book.description %>
-</p>
-
-<p>
-  <b>Author name:</b>
-  <%= @book.author_name %>
-</p>
-
-<p>
-  <b>Publisher name:</b>
+  <b>Publisher: </b>
   <%= @book.publisher_name %>
 </p>
 
@@ -26,25 +31,8 @@
 </p>
 
 <p>
-  <b>Unit price:</b>
-  <%= @book.unit_price %>
+  <b>Price:</b>
+  <%= number_to_currency(@book.unit_price) %>
 </p>
 
-<p>
-  <b>Photo url:</b>
-  <%= @book.photo_url %>
-</p>
-
-<p>
-  <b>Total rating value:</b>
-  <%= @book.total_rating_value %>
-</p>
-
-<p>
-  <b>Total rating count:</b>
-  <%= @book.total_rating_count %>
-</p>
-
-
-<%= link_to 'Edit', edit_book_path(@book) %> |
 <%= link_to 'Back', books_path %>

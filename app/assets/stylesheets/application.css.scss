@@ -149,8 +149,15 @@
   }
 
   .list_image {
-    width:  60px;
+    width: 60px;
     height: 70px;
+  }
+  
+  .detail_image {
+    float: left;
+    width: 200;
+    height: 200px;
+    padding: 20px;
   }
 
   .list_description {
@@ -182,6 +189,32 @@
   }
   .list_line_odd {
     background:   #f8b0f8;
+  }
+  
+  
+  // .star-rating s:hover {
+  //   color: yellow;
+  // }
+  // .star-rating s,
+  // .star-rating {
+  //   padding: 2px;
+  // }
+  // .star-rating s:hover:before{
+  //   content: "\2605";
+  // }
+  .star-rating s:before {
+    content: "\2606"; 
+  }
+  
+  .star {
+    color: blue
+  }
+  
+  .star-empty b:before{
+    content: "\2606"
+  }  
+  .star-filled b:before{
+    content: "\2605"
   }
 }
 

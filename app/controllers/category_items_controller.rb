@@ -44,7 +44,7 @@ class CategoryItemsController < ApplicationController
 
     respond_to do |format|
       if @category_item.save
-        format.html { redirect_to @category_item, notice: 'Category item was successfully created.' }
+        format.html { redirect_to @category_item, notice: "Category item was successfully created." }
         format.json { render json: @category_item, status: :created, location: @category_item }
       else
         format.html { render action: "new" }

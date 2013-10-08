@@ -5,13 +5,16 @@ Feature: Browse the store at homepage
 
 Background:
   Given there is a category named "Technology"
-  Given there is a book named "Programming Ruby 1.9"
+  And there is a book named "Programming Ruby 1.9"
   And the book's author is "Somebody"
   And the book's other's attribute is auto-generated
+  And the book "Programming Ruby 1.9" belongs to the category "Technology"
   When I go to the homepage
 
 Scenario: Homepage layout
    Then I should see the homepage rendered
+   And I should see the category "Technology"
+   And I should see the book "Programming Ruby 1.9"
 # Scenario: Layout and content
 #   Then I should see the homepage rendered
 #   And there is a client called "soChange" listed

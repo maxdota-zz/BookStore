@@ -1,10 +1,10 @@
 
       <div class="navbar navbar-default" role="navigation" >
-          <%= link_to "Max's Bookshop Catalog", store_url, class: "title brand" %>
+          <%= link_to "Max's Bookshop Catalog", store_url, :class => "title brand" %>
           <ul class="nav navbar-nav">
             <% if !@categories.nil? %>
             <% @categories.each do |category| %>
-              <% if @category_id == category.id.to_s %>
+              <% if @category && @category.id == category.id %>
                 <li class="active">
               <% else %>
                 <li>
@@ -28,4 +28,8 @@
       <span class="price"><%= number_to_currency(book.unit_price) %></span>
     </div>
   </div>
+<% end %>
+
+<% if @books %>
+  <p> <%= will_paginate @books %> </p>
 <% end %>

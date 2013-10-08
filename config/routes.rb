@@ -10,9 +10,10 @@ Bookstore::Application.routes.draw do
   controller :categories do
     get 'category/up/:id' => 'categories#up', as: 'category_up'
     get 'category/down/:id' => 'categories#down', as: 'category_down'
-    get 'category/book_display/:id' => 'categories#book_display', as: 'category_book_display' 
-    get 'category/book_add/:category_id/:book_id' => 'categories#book_add', as: 'category_book_add' 
-    get 'category/book_remove/:category_id/:book_id' => 'categories#book_remove', as: 'category_book_remove'
+    get 'category/display_books/:id' => 'categories#display_books', as: 'category_display_books' 
+    get 'category/display_other_books/:id' => 'categories#display_other_books', as: 'category_display_other_books' 
+    get 'category/add_book/:category_id/:book_id' => 'categories#add_book', as: 'category_add_book' 
+    get 'category/remove_book/:category_id/:book_id' => 'categories#remove_book', as: 'category_remove_book'
   end
 
 
@@ -28,16 +29,21 @@ Bookstore::Application.routes.draw do
     get 'activate/:token' => 'users#activate', as: 'activate'
     get 'user/upgrade/:id' => 'users#upgrade', as: 'upgrade'
     get 'user/downgrade/:id' => 'users#downgrade', as: 'downgrade'
-    get 'user/passwordreset' => 'users#password_reset', as: 'password_reset'
-    post 'user/passwordreset' => 'users#password_reset', as: 'password_reset'
-    get 'user/passwordresetresult/:token' => 'users#password_reset_result', as: 'reset_result'
-    post 'user/passwordresetresult' => 'users#password_reset_result', as: 'password_reset_result'
+    get 'user/password_reset' => 'users#password_reset', as: 'password_reset'
+    post 'user/password_reset' => 'users#password_reset', as: 'password_reset'
+    get 'user/password_reset_result/:token' => 'users#password_reset_result', as: 'reset_result'
+    post 'user/password_reset_result' => 'users#password_reset_result', as: 'password_reset_result'
+    get 'user/change_email' => 'users#change_email', as: 'change_email_address'
+    post 'user/change_email' => 'users#change_email', as: 'change_email'
+    get 'user/change_password' => 'users#change_password', as: 'change_password'
+    post 'user/change_password' => 'users#change_password', as: 'change_password'
   end
   
   controller :store do
     get 'store/index' => 'store#index', as: 'store'
     get 'store/index/:category' => 'store#index', as: 'store_browse'    
-    post 'store/search' => 'store#book_search', as: 'book_search'    
+    get 'store/index/:category/:pagination' => 'store#index', as: 'store_browse_pag'    
+    get 'store/search' => 'store#book_search', as: 'book_search'    
   end
 
   # The priority is based upon order of creation:

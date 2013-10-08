@@ -27,7 +27,7 @@
     <td><%= user.activation %></td>
     <td>
         <% if !user.activation && !user.tokenized_code.empty? %>
-            <%= link_to 'Activate', activate_path(user.tokenized_code) %>
+            <%= link_to "Activate", activate_path(user.tokenized_code) %>
         <% end %>
     </td>
     <td><%= user.role %></td>
@@ -38,8 +38,8 @@
             <%= link_to image_tag("arrow_up.jpeg"), upgrade_path(user.id.to_s) %>   
         <% end %>
     </td>
-    <td><%= link_to 'Edit', edit_user_url(user) %></td>
-    <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to "Edit", edit_user_url(user) %></td>
+    <td><%= link_to "Delete", user, :method => :delete, :data => { :confirm => "Are you sure?" } %></td>
   </tr>
 <% end %>
 </table>

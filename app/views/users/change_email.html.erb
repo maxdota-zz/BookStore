@@ -1,0 +1,19 @@
+<h1> Please enter the following information to change your email </h1> <br />
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<%= form_for(@user, :url => change_email_path, :method => :post) do |f| %>
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :email_address %>
+    <%= f.text_field :email_address %>
+  </div>
+  <br />
+  <div class="actions">
+    <%= f.submit "Change", :class => "btn btn-info" %>
+  </div>
+<% end %>

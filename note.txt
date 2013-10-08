@@ -1,2 +1,0 @@
-+ log in after activation and password reset
-+ change email / password

@@ -25,6 +25,8 @@
           <li>
             <%= link_to raw("<i class='icon-edit icon-white'></i> Edit account information"), edit_user_url(session[:user_id]) %>
           </li>
+          <li><%= link_to 'Change Email', change_email_address_url %></li>
+          <li><%= link_to 'Change Password', change_password_path %></li>
           <li><%= link_to 'Log out', logout_url, method: :delete %></li>
           <% if session[:role] == "admin" %>
           <li><h3>Admin Panel</h3></li>      
@@ -39,7 +41,7 @@
         <% end %>
       </ul>
       <h3 class="sidebar-title">Search</h3>
-          <%= form_tag(book_search_url, class: "better-search-bar option") do |f| %>
+          <%= form_tag(book_search_url, :method => 'get', :class => "better-search-bar option") do |f| %>
           Search by:
           <div class="right">
             <div class="btn-group" data-toggle="buttons">

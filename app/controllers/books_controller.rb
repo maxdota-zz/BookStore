@@ -2,11 +2,11 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all
+    @books = Book.paginate page: params[:page], per_page: 10
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @books }
+      format.json { render :json => @books }
     end
   end
 
@@ -14,10 +14,13 @@ class BooksController < ApplicationController
   # GET /books/1.json
   def show
     @book = Book.find(params[:id])
+    @average_rating = @book.total_rating_count == 0 ? 0 : @book.total_rating_value / @book.total_rating_count
+    puts "TESTING HEERE"
+    puts @average_rating
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @book }
+      format.json { render :json => @books }
     end
   end
 
@@ -28,7 +31,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @book }
+      format.json { render :json => @books }
     end
   end
 
@@ -41,16 +44,14 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = Book.new(params[:book])
-    @book.total_rating_value = 0
-    @book.total_rating_count = 0
 
     respond_to do |format|
       if @book.save
-        format.html { redirect_to @book, notice: 'Book was successfully created.' }
-        format.json { render json: @book, status: :created, location: @book }
+        format.html { redirect_to @book, :notice => "Book was successfully created." }
+        format.json { render :json => @book, :status => :created, :location => @book }
       else
-        format.html { render action: "new" }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.json { render :json => @books.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -62,11 +63,11 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.update_attributes(params[:book])
-        format.html { redirect_to @book, notice: 'Book was successfully updated.' }
+        format.html { redirect_to @book, :notice => "Book was successfully updated." }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.json { render :json => @books.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,7 +80,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.errors.any?
-        format.html { redirect_to books_url, notice: @book.errors.full_messages[0] }
+        format.html { redirect_to books_url, :notice => @book.errors.full_messages[0] }
       else
         format.html { redirect_to books_url }
       end

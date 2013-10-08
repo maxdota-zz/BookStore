@@ -21,11 +21,46 @@ Then /^I should see the search panel$/ do
   page.body.should include("<h3 class=\"sidebar-title\">Search</h3>")
 end
 
-And /^print out users$/ do
-  @users = User.all
-  puts "ABC"
-  puts @users.inspect
-  puts "TESTING HERE"
+Then (/^I should see the (category|book) "([^\"]*)"$/) do |type, name|    
+  page.should have_content(name)
+end
+
+Given (/^there is a user with username "([^\"]*)"$/) do |username|
+  @user = User.new
+  @user.username = username
+end
+
+Given (/^the password is "([^\"]*)"$/) do |password|
+  @user.password = password
+  @user.password_confirmation = password
+end
+
+Given (/^the activation status is "([^\"]*)"$/) do |status|
+  if status == "activated"
+    @user.activation = true
+  else
+    @user.activation = false
+  end
+end
+
+Given (/^the role is "([^\"]*)"$/) do |role|
+  @user.role = role
+end
+
+Given (/I fill in ([^\"]*) with ([^\"]*)$/) do |field, value|
+  puts field
+  puts "TESTING HEEE RE"
+  page.should have_content("Test")
+  fill_in(field, :with => value)
+end
+
+Then (/^The notice display should be ([^\"]*)$/) do |notice|
+  
+end
+    
+Given (/^the other's information of this user is auto-gererated$/) do
+  @user = FactoryGirl.create(:user, username: @user.username, password: @user.password, \
+    password_confirmation: @user.password_confirmation, activation: @user.activation, role: @user.role)
 end
 
 Given(/^my email address is ([^\"]*)$/) do |email|

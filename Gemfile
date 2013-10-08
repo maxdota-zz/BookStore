@@ -54,3 +54,4 @@ end
 gem 'ruby-gmail'
 gem "galetahub-simple_captcha", :require => "simple_captcha"
 gem 'bootstrap-sass', '2.3.2.0'
+gem 'will_paginate', '~> 3.0'

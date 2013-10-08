@@ -11,6 +11,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @categories.each do |category| %>
@@ -23,7 +24,8 @@
     <td>
             <%= link_to image_tag("arrow_up.jpeg"), category_up_path(category.id) %>   
     </td>
-    <td><%= link_to 'Book add/remove', category_book_display_path(category) %></td>
+    <td><%= link_to 'Add book', category_display_other_books_path(category) %></td>
+    <td><%= link_to 'Remove book', category_display_books_path(category) %></td>
     <td><%= link_to 'Change Name', edit_category_path(category) %></td>
     <td><%= link_to 'Delete', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>

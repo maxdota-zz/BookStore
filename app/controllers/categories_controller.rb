@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @categories }
+      format.json { render :json => @categories }
     end
   end
 
@@ -17,7 +17,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @category }
+      format.json { render :json => @category }
     end
   end
 
@@ -28,7 +28,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @category }
+      format.json { render :json => @category }
     end
   end
 
@@ -41,17 +41,14 @@ class CategoriesController < ApplicationController
   # POST /categories.json
   def create
     @category = Category.new(params[:category])
-    @category.sort_order = Category.all.max_by(&:sort_order).sort_order + 1
-    puts @category.sort_order
-    puts "TESTING HERE"
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to categories_url, notice: 'Category was successfully created.' }
-        format.json { render json: @category, status: :created, location: @category }
+        format.html { redirect_to categories_url, :notice => "Category was successfully created." }
+        format.json { render :json => @category, :status => :created, :location => @category }
       else
-        format.html { render action: "new" }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.json { render :json => @category.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,11 +60,11 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.update_attributes(params[:category])
-        format.html { redirect_to categories_url, notice: 'Category was successfully updated.' }
+        format.html { redirect_to categories_url, :notice => "Category was successfully updated." }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.json { render :json => @category.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,75 +76,59 @@ class CategoriesController < ApplicationController
     @category.destroy
 
     respond_to do |format|
-      format.html { redirect_to categories_url, notice: 'Category was successfully removed.'  }
+      format.html { redirect_to categories_url, :notice => "Category was successfully removed." }
       format.json { head :no_content }
     end
   end
   
   def up
-    @category = Category.find(params[:id])
-    if @category.sort_order == 1
-      redirect_to categories_url, notice: 'Category is already the first.'
-    else
-      @other_category = Category.find_by_sort_order(@category.sort_order - 1)
-      @category.update_attribute("sort_order", @category.sort_order - 1)  
-      if !@other_category.nil?
-        @other_category.update_attribute("sort_order", @category.sort_order + 1)
-      end
-      redirect_to categories_url, notice: 'Sort order of ' + @category.name + ' is up by 1.'
-    end  
+    result = Category.sort_order_change(params[:id], "up")
+    redirect_to categories_url, notice: result
   end
   
   def down
+    result = Category.sort_order_change(params[:id], "down")
+    redirect_to categories_url, :notice => result
+  end
+  
+  def display_books
     @category = Category.find(params[:id])
-    if @category == Category.all.max_by(&:sort_order) 
-      redirect_to categories_url, notice: 'Category is already the last.'
+    @books = @category.books.paginate page: params[:page], per_page: 6
+  end
+  
+  def display_other_books
+    @category = Category.find(params[:id])
+    if @category.books.empty?
+      @other_books = Book.paginate page: params[:page], per_page: 6
     else
-      @other_category = Category.find_by_sort_order(@category.sort_order + 1)
-      @category.update_attribute("sort_order", @category.sort_order + 1)
-      if !@other_category.nil?
-        @other_category.update_attribute("sort_order", @category.sort_order - 1)
-      end
-      redirect_to categories_url, notice: 'Sort order of ' + @category.name + ' is down by 1.'
-    end  
+      @other_books = Book.where('id not in (?)', @category.books).paginate page: params[:page], per_page: 6
+    end
   end
   
-  def book_display
-    @category = Category.find(params[:id])   
-    @category_books = Book.all.find_all{|book| (book.categories.include? Category.find(@category.id)) }
-    @other_books = []
-    Book.all.each do |book|
-      if !@category_books.any?{ |b| b.id == book.id }
-        @other_books << book
-      end
-    end  
-  end
-  
-  def book_add
-    @category = Category.find(params[:category_id])
-    @book = Book.find(params[:book_id])
-    @item = @category.add_book(@book.id)
+  def add_book
+    category = Category.find(params[:category_id])
+    book = Book.find(params[:book_id])
+    item = category.add_book(book.id)
     
     respond_to do |format|
-      if @item.save
-        format.html { redirect_to category_book_display_url(@category.id), notice: "Book added to category successfully." }
-        format.json { render json: @item, status: :created, location: @item }
+      if item.save
+        format.html { redirect_to category_display_other_books_url(category.id), :notice => "Book added to category successfully." }
+        format.json { render :json => item, :status => :created, :location => item }
       else
         format.html { render action: "new" }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+        format.json { render :json => item.errors, :status => :unprocessable_entity }
       end
     end
   end
   
-  def book_remove
-    @category = Category.find(params[:category_id])
-    @book = Book.find(params[:book_id])
-    @item = CategoryItem.all.find_all{|item| item.category_id == @category.id }.find_all{|item| item.book_id == @book.id }.first    
-    @item.destroy
+  def remove_book
+    category = Category.find(params[:category_id])
+    book = Book.find(params[:book_id])
+    CategoryItem.where('category_id = (?) and book_id = (?)', category.id, book.id).first.destroy 
     
     respond_to do |format|
-      format.html { redirect_to category_book_display_url(@category.id), notice: "Book removed from category successfully." }
-      format.json { render json: @item, status: :created, location: @item }
+      format.html { redirect_to category_display_books_url(category.id), :notice => "Book removed from category successfully." }
+      format.json { render :json => item, :status => :created, :location => item }
     end
   end
 end

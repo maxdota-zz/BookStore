@@ -1,29 +1,34 @@
 class StoreController < ApplicationController
   def index
-    @categories = Category.order(:sort_order)
-    if params[:category]
-      @category_id = params[:category]
+    @categories = Category.all
+    @category = params[:category].nil? ? @categories.first : Category.find(params[:category])
+    if params[:pagination] && params[:pagination].to_i <= 10 && params[:pagination].to_i > 0
+      @books = @category.books.paginate page: params[:page], per_page: params[:pagination]
     else
-      @category_id = @categories[0].id.to_s
+      @books = @category.books.paginate page: params[:page], per_page: 5
     end
-    
-    @books = Book.all.find_all{|book| (book.categories.include? Category.find(@category_id)) }
   end
   
   def book_search
     if params[:search_category] == "all"
       if params[:search_type] == "title"
-        @books = Book.all.find_all{|book| !(book.title =~ /#{params[:search_input]}/).nil? }
+        @books = Book.where("upper(title) like upper('%#{params[:search_input]}%')")
       else
-        @books = Book.all.find_all{|book| !(book.author_name =~ /#{params[:search_input]}/).nil? }
+        @books = Book.where("upper(author_name) like upper('%#{params[:search_input]}%')")
       end
     else      
-      @categories = [Category.find(params[:search_category])]
-      if params[:search_type] == "title"
-        @books = Book.all.find_all{|book| !(book.title =~ /#{params[:search_input]}/).nil? && (book.categories.include? Category.find(params[:search_category])) }
-      else        
-        @books = Book.all.find_all{|book| !(book.author_name =~ /#{params[:search_input]}/).nil? && (book.categories.include? Category.find(params[:search_category])) }
+      @category = Category.find(params[:search_category])
+      # to display the category name in the view
+      @categories = [@category]
+      if params[:search_type] == "title"        
+        @books = Book.where("upper(title) like upper('%#{params[:search_input]}%') and id in (?)", @category.books)
+      else  
+        @books = Book.where("upper(author_name) like upper('%#{params[:search_input]}%') and id in (?)", @category.books)
       end
+    end
+    if @books
+      @books = @books.paginate page: params[:page], per_page: 5
+      current_search = @books
     end
   end
 end

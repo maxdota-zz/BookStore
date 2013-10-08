@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @users }
+      format.json { render :json => @users }
     end
   end
 
@@ -22,11 +22,13 @@ class UsersController < ApplicationController
     if @user
       @user.update_attribute("activation", true)
       @user.update_attribute("tokenized_code", "")
+      session[:role] = @user.role
+      session[:user_id] = @user.id 
     end
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @user, status: :created, location: @user }
+      format.json { render :json => @user, :status => :created, :location => @user }
     end
   end
 
@@ -37,7 +39,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @user }
+      format.json { render :json => @user }
     end
   end
 
@@ -50,23 +52,19 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     if simple_captcha_valid?
-      @user = User.new(params[:user])
-      @user.account_creation_date = Date.current
-      @user.role = "normal"
-      @user.activation = false
-      @user.tokenized_code = Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s)
+      @user = User.new(params[:user]) 
       respond_to do |format|
         if @user.save
           @user.send_activation_email(@user.full_name, @user.username, @user.email_address, activate_url(@user.tokenized_code))
-          format.html { redirect_to users_url, notice: 'User was successfully created.' }
-          format.json { render json: @user, status: :created, location: @user }
+          format.html { redirect_to users_url, :notice => "User was successfully created." }
+          format.json { render :json => @user, :status => :created, :location => @user }
         else
-          format.html { render action: "new" }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.html { render :action => "new" }
+          format.json { render :json => @user.errors, :status => :unprocessable_entity }
         end
       end
     else    
-      redirect_to new_user_url, notice: 'The letters you entered does not match the image.'
+      redirect_to new_user_url, :notice => "The letters you entered does not match the image."
     end
   end
 
@@ -77,15 +75,15 @@ class UsersController < ApplicationController
     if simple_captcha_valid?
       respond_to do |format|
         if @user.update_attributes(params[:user])
-          format.html { redirect_to users_url, notice: "User's information was successfully updated." }
+          format.html { redirect_to users_url, :notice => "User's information was successfully updated." }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @user.errors, :status => :unprocessable_entity }
         end
       end
     else
-      redirect_to edit_user_url(@user), notice: 'The letters you entered does not match the image.'
+      redirect_to edit_user_url(@user), :notice => "The letters you entered does not match the image."
     end
   end
 
@@ -108,14 +106,14 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     respond_to do |format|
       if !@user.activation    
-        format.html { redirect_to users_url, notice: 'User that is not activated cannot be upgraded.' }
+        format.html { redirect_to users_url, :notice => "User that is not activated cannot be upgraded." }
         format.json { head :no_content }      
       elsif @user.update_attribute("role", "admin")
-        format.html { redirect_to users_url, notice: 'User was successfully upgraded to admin.' }
+        format.html { redirect_to users_url, :notice => "User was successfully upgraded to admin." }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.json { render :json => @user.errors, :notice => :unprocessable_entity }
       end
     end
   end
@@ -125,11 +123,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       begin
         if @user.update_attribute("role", "normal")
-          format.html { redirect_to users_url, notice: 'User was successfully downgraded to normal.' }
+          format.html { redirect_to users_url, :notice => "User was successfully downgraded to normal." }
           format.json { head :no_content }
         else
-          format.html { render action: "edit" }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.json { render :json => @user.errors, :status => :unprocessable_entity }
         end
       rescue Exception => e
         flash[:notice] = e.message
@@ -151,15 +149,16 @@ class UsersController < ApplicationController
       @user_info = User.new(params[:user])
       respond_to do |format|
         if @user_info.password != @user_info.password_confirmation
-          format.html { redirect_to reset_result_path(session[:code]), notice: 'Password confirmation does not match the password.' }    
+          format.html { redirect_to reset_result_path(session[:code]), :notice => "Password confirmation does not match the password." }    
         else          
           @user = User.find_by_username(session[:temp_username])
-          @user.update_attribute("password", @user_info.password)
-          @user.update_attribute("password_confirmation", @user_info.password)
+          @user.change_password(@user_info.password)
           @user.update_attribute("tokenized_code", "")
           session[:code] = nil
-          session[:temp_username] = nil     
-          format.html { redirect_to users_url, notice: 'New password has been set.' }
+          session[:temp_username] = nil    
+          session[:role] = @user.role
+          session[:user_id] = @user.id 
+          format.html { redirect_to users_url, :notice => "New password has been set." }
         end
       end
     end
@@ -172,20 +171,57 @@ class UsersController < ApplicationController
         @user = User.find_by_username(@user_info.username)
         respond_to do |format|
           if !@user or @user.email_address != @user_info.email_address
-            format.html { redirect_to password_reset_url, notice: 'Incorrect username/email address combination.' }
+            format.html { redirect_to password_reset_url, :notice => "Incorrect username/email address combination." }
           elsif !@user.activation
-            format.html { redirect_to password_reset_url, notice: 'This account is not activated.' }          
+            format.html { redirect_to password_reset_url, :notice => "This account is not activated." }          
           else
-            @user.update_attribute("tokenized_code", Digest::MD5.hexdigest(@user.full_name + @user.email_address + rand(1000).to_s + rand(1000).to_s + rand(1000).to_s))
+            @user.update_attribute("tokenized_code", Digest::MD5.hexdigest("#{@user.full_name} #{@user.email_address} #{rand(1000).to_s} #{rand(1000).to_s} #{rand(1000).to_s}"))
             @user.send_password_reset_email(@user.full_name, @user.username, @user.email_address, reset_result_url(@user.tokenized_code))
-            format.html { redirect_to password_reset_url, notice: 'Please check your email to reset the password.' }
+            format.html { redirect_to password_reset_url, :notice => "Please check your email to reset the password." }
           end
         end
       else
-        redirect_to password_reset_url, notice: 'The letters you entered does not match the image.'
+        redirect_to password_reset_url, :notice => "The letters you entered does not match the image."
       end
     else
       @user = User.new
+    end
+  end
+  
+  def change_email    
+    if (request.post?)
+      @user_info = User.new(params[:user])
+      @user = User.find(session[:user_id])
+      if @user.authenticate(@user_info.password)
+        @user_info.valid?
+        if @user_info.errors.include?(:email_address)
+          redirect_to change_email_address_url, :notice => "Invalid email address."
+        else
+          @user.update_attribute("email_address", @user_info.email_address)
+          redirect_to store_url, :notice => "Email address is changed successfully."
+        end
+      else
+        redirect_to change_email_address_url, :notice => "Incorrect password."
+      end
+    end
+    @user = User.new
+  end
+  
+  def change_password   
+    if (request.post?)
+      @user = User.find(session[:user_id])
+      if @user.authenticate(params[:old_password])
+        @user.password = params[:new_password]
+        @user.password_confirmation = params[:confirm_password]
+        if @user.valid?
+          @user.change_password(params[:new_password])
+          redirect_to store_url, :notice => "Password is change successfully."
+        else          
+          redirect_to change_password_url, :notice => "New password and its confirmation do not match."
+        end
+      else
+        redirect_to change_password_url, :notice => "Incorrect password."
+      end
     end
   end
 end
