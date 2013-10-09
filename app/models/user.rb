@@ -47,7 +47,8 @@ class User < ActiveRecord::Base
   end
 
   def send_email(email_address, subj, text, html)
-    gmail = Gmail.new("ngoc.nguyen@stanyangroup.com", "hongngoc92")
+    if !Rails.env.test?
+      gmail = Gmail.new("ngoc.nguyen@stanyangroup.com", "hongngoc92")
       gmail.deliver do
         to email_address 
         subject subj
@@ -58,6 +59,7 @@ class User < ActiveRecord::Base
           body html
         end
       end
+    end
   end
   
   def change_password(new_password)
@@ -69,8 +71,8 @@ class User < ActiveRecord::Base
   
   def set_defaults    
     self.account_creation_date = Date.current
-    self.role = "normal"
-    self.activation = false
+    self.role ||= "normal"
+    self.activation ||= false
     self.tokenized_code = Digest::MD5.hexdigest("#{self.full_name} #{self.email_address} #{rand(1000).to_s} #{rand(1000).to_s} #{rand(1000).to_s}")  
   end
 
