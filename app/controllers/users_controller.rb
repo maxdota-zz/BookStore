@@ -107,7 +107,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     respond_to do |format|
       if !@user.activation    
-        format.html { redirect_to users_url, :notice => "User that is not activated cannot be upgraded." }
+        format.html { redirect_to users_url, :notice => "User that is not activated cannot become admin." }
         format.json { head :no_content }      
       elsif @user.update_attribute("role", "admin")
         format.html { redirect_to users_url, :notice => "User was successfully upgraded to admin." }
@@ -120,15 +120,15 @@ class UsersController < ApplicationController
   end
 
   def downgrade
-    @user = User.find(params[:id])
+    user = User.find(params[:id])
     respond_to do |format|
       begin
-        if @user.update_attribute("role", "normal")
+        if user.update_attribute("role", "normal")
           format.html { redirect_to users_url, :notice => "User was successfully downgraded to normal." }
           format.json { head :no_content }
         else
           format.html { render :action => "edit" }
-          format.json { render :json => @user.errors, :status => :unprocessable_entity }
+          format.json { render :json => user.errors, :status => :unprocessable_entity }
         end
       rescue Exception => e
         flash[:notice] = e.message
@@ -197,7 +197,7 @@ class UsersController < ApplicationController
       if @user.authenticate(@user_info.password)
         @user_info.valid?
         if @user_info.errors.include?(:email_address)
-          redirect_to change_email_address_url, :notice => "Invalid email address."
+          redirect_to change_email_address_url, :notice => "Invalid new email address."
         else
           @user.update_attribute("email_address", @user_info.email_address)
           redirect_to store_url, :notice => "Email address is changed successfully."
