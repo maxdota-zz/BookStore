@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  skip_before_filter :admin_authorize, :user_authorize, :only => [:show]
+  
   # GET /books
   # GET /books.json
   def index
@@ -19,7 +21,7 @@ class BooksController < ApplicationController
     if session[:user_id]
       @comment = Comment.new
     end
-    @comments = @book.comments.paginate page: params[:page], per_page: 5
+    @comments = @book.comments.order(:date).paginate page: params[:page], per_page: 5
 
     respond_to do |format|
       format.html # show.html.erb

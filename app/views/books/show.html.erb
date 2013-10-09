@@ -28,13 +28,13 @@ by <b><%= @book.author_name %></b> <br />
   <%= number_to_currency(@book.unit_price) %>
 </p>
 
-<%= link_to 'Back', books_path %>
+<%= link_to 'Back', store_path %>
 <h3>Comments</h3>
 
 <% @comments.each do |comment| %>
   <div class="comment">
     <div>
-      <% if session[:role] = "admin" %>
+      <% if session[:role] == "admin" %>
         <div class="right">          
           <%= link_to 'Delete comment', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
         </div>

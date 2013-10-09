@@ -3,14 +3,14 @@
           <%= link_to "Max's Bookshop Catalog", store_url, :class => "title brand" %>
           <ul class="nav navbar-nav">
             <% if !@categories.nil? %>
-            <% @categories.each do |category| %>
-              <% if @category && @category.id == category.id %>
-                <li class="active">
-              <% else %>
-                <li>
+              <% @categories.each do |category| %>
+                <% if @category && @category.id == category.id %>
+                  <li class="active">
+                <% else %>
+                  <li>
+                <% end %>
+                <%= link_to category.name, store_browse_path(category.id) %></li>
               <% end %>
-              <%= link_to category.name, store_browse_path(category.id) %></li>
-            <% end %>
             <% end %>
           </ul>
       </div><!-- /.navbar -->
@@ -18,19 +18,28 @@
 <% if notice %>
 <p id="notice"><%= notice %></p>
 <% end %>
-
-<% @books.each do |book| %>
-  <div class="entry">
-    <%= image_tag(book.photo_url) %>
-    <h3><%= book.title %></h3>
-    <p><%= sanitize(book.description) %></p>
-    <div class="price_line">
-      <span class="price"><%= number_to_currency(book.unit_price) %></span>
-      <span><%= link_to 'Detail', book %></span>
-    </div>
-  </div>
-<% end %>
-
+<br />
+<div>
+  <% if session[:pagination] %>
+    See <%= select_tag :pagination, options_for_select((1..10).map{|s| ["#{s}", s]}, session[:pagination]) %> books per page
+  <% else %>
+    See <%= select_tag :pagination, options_for_select((1..10).map{|s| ["#{s}", s]}, 5) %> books per page
+  <% end %>
+</div>
 <% if @books %>
+  <% @books.each do |book| %>
+    <div class="entry">
+      <%= image_tag(book.photo_url) %>
+      <h3><%= book.title %></h3>
+      <% @rating = (book.total_rating_count == 0 ? 0 : book.total_rating_value / book.total_rating_count).round %>
+      <div class="star-container left"><%= render 'comments/stars' %></div>
+      <p>by <%= book.author_name %></p>
+      <p><%= sanitize(book.description) %></p>
+      <div class="price_line">
+        <span class="price"><%= number_to_currency(book.unit_price) %></span>
+        <span><%= link_to 'Detail', book %></span>
+      </div>
+    </div>
+  <% end %>
   <p> <%= will_paginate @books %> </p>
 <% end %>

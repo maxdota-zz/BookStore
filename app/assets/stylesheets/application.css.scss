@@ -190,21 +190,6 @@
   .list_line_odd {
     background:   #f8b0f8;
   }
-    
-  .star {
-    color: blue;
-  } 
-  
-  .margin-left {
-    margin-left: 3px;
-  }
-  
-  .star-empty b:before{
-    content: "\2606";
-  }  
-  .star-filled b:before{
-    content: "\2605"
-  }
   
 }
 
@@ -280,6 +265,7 @@
     border: 1px solid black;
     text-align: center;
   }
+  
   .category {
     img {
       width: 30px;
@@ -347,4 +333,25 @@
   padding-left: 0px;
   height: 180px;
   width: 800px;
+}
+  
+.star {
+  color: blue;
+} 
+  
+.star-empty b:before{
+  content: "\2606";
+}  
+
+.star-filled b:before{
+  content: "\2605"
+}
+  
+.margin-left {
+  margin-left: 3px;
+}
+
+.star-container {
+  padding-left: 100px;
+  padding-right: 20px;
 }

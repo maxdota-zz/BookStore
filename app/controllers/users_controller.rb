@@ -1,6 +1,8 @@
-require 'digest/md5'
-
 class UsersController < ApplicationController
+ # skip_before_filter :user_authorize, :admin_authorize
+  
+  skip_before_filter :user_authorize, :only => [:password_reset, :password_reset_result, :activate, :create, :new]
+  skip_before_filter :admin_authorize, :only => [:password_reset, :password_reset_result, :activate, :create, :new, :change_email, :change_password, :update, :edit]
   include SimpleCaptcha::ControllerHelpers
 
   # GET /users
@@ -46,7 +48,11 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    if session[:role] != "admin" && params[:id] != session[:user_id].to_s
+      redirect_to store_url, :notice => "Access restricted."
+    else
+      @user = User.find(params[:id])
+    end
   end
 
   # POST /users
@@ -73,10 +79,13 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    if session[:role] != "admin" && params[:id] != session[:user_id].to_s
+      redirect_to store_url, :notice => "Access restricted."
+    else
     if simple_captcha_valid?
       respond_to do |format|
         if @user.update_attributes(params[:user])
-          format.html { redirect_to users_url, :notice => "User's information was successfully updated." }
+          format.html { redirect_to store_url, :notice => "User's information was successfully updated." }
           format.json { head :no_content }
         else
           format.html { render :action => "edit" }
@@ -84,7 +93,8 @@ class UsersController < ApplicationController
         end
       end
     else
-      redirect_to edit_user_url(@user), :notice => "The letters you entered does not match the image."
+      redirect_to edit_user_url(@user), :notice => "The letters you entered do not match the image."
+    end
     end
   end
 
@@ -209,7 +219,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
   
-  def change_password   
+  def change_password  
     if (request.post?)
       @user = User.find(session[:user_id])
       if @user.authenticate(params[:old_password])
