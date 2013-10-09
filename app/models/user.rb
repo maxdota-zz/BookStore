@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
 
   def send_email(email_address, subj, text, html)
-    if !Rails.env.test?
+    unless Rails.env.test?
       gmail = Gmail.new("ngoc.nguyen@stanyangroup.com", "hongngoc92")
       gmail.deliver do
         to email_address 
