@@ -1,11 +1,14 @@
 class StoreController < ApplicationController
+  skip_before_filter :user_authorize, :admin_authorize
   def index
-    @categories = Category.all
-    @category = params[:category].nil? ? @categories.first : Category.find(params[:category])
     if params[:pagination] && params[:pagination].to_i <= 10 && params[:pagination].to_i > 0
-      @books = @category.books.paginate page: params[:page], per_page: params[:pagination]
-    else
-      @books = @category.books.paginate page: params[:page], per_page: 5
+      session[:pagination] = params[:pagination]
+    end
+    session[:pagination] ||= 5
+    @categories = Category.all
+    if !@categories.empty?
+      @category = params[:category].nil? ? @categories.first : Category.find(params[:category])
+      @books = @category.books.paginate page: params[:page], per_page: session[:pagination]
     end
   end
   
@@ -27,8 +30,19 @@ class StoreController < ApplicationController
       end
     end
     if @books
-      @books = @books.paginate page: params[:page], per_page: 5
+      if params[:pagination] && params[:pagination].to_i <= 10 && params[:pagination].to_i > 0
+        session[:pagination] = params[:pagination]
+      end
+      session[:pagination] ||= 5
+      @books = @books.paginate page: params[:page], per_page: session[:pagination]
       current_search = @books
+    end
+  end
+  
+  def change_pagination
+    session[:pagination] = params[:number]
+    respond_to do |format|
+      format.js   {}
     end
   end
 end

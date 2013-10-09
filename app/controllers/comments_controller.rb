@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+ # skip_before_filter :user_authorize, :only => []
+  skip_before_filter :admin_authorize, :only => [:create]
   # GET /comments
   # GET /comments.json
   def index
@@ -42,12 +44,16 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(params[:comment])
     @comment.user_id = session[:user_id]
-    @comment.date = Date.current
-    if @comment.save
-      @comment.book.add_rate(@comment.rating)
-      redirect_to book_path(@comment.book_id), notice: "Comment has been made successfully."
+    if !Comment.where("user_id = ? and book_id = ?", @comment.user_id, @comment.book_id).empty?
+      redirect_to book_path(@comment.book_id), notice: "You cannot comment and rate a book twice."
     else
-      redirect_to book_path(@comment.book_id), notice: @comment.errors.full_messages[0]
+      @comment.date = Date.current
+      if @comment.save
+        @comment.book.add_rate(@comment.rating)
+        redirect_to book_path(@comment.book_id), notice: "Comment has been made successfully."
+      else
+        redirect_to book_path(@comment.book_id), notice: @comment.errors.full_messages[0]
+      end
     end
   end
 

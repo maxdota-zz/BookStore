@@ -47,6 +47,8 @@ Bookstore::Application.routes.draw do
     get 'store/index/:category' => 'store#index', as: 'store_browse'    
     get 'store/index/:category/:pagination' => 'store#index', as: 'store_browse_pag'    
     get 'store/search' => 'store#book_search', as: 'book_search'    
+    get 'store/:pagination/search' => 'store#book_search', as: 'book_search_pagination' 
+    get 'store/change_pagination/:number' => 'store#change_pagination', as: 'store_change_pagination'   
   end
 
   # The priority is based upon order of creation:

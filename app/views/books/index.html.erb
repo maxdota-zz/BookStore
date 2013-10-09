@@ -9,6 +9,11 @@
 <% @books.each do |book| %>
   <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
     <td><%= image_tag(book.photo_url, :class => 'list_image') %></td>
+    <td>      
+      <% @rating = (book.total_rating_count == 0 ? 0 : book.total_rating_value / book.total_rating_count).round %>
+      <div class="left"><%= render 'comments/stars' %></div><br />
+      <p>by <%= book.author_name %></p>
+    </td>
     <td class="list_description">  
       <dl>
         <dt><%= book.title %></dt>
@@ -17,6 +22,7 @@
     </td>
     <td class="list_actions">
       <%= link_to 'Show', book %><br/>
+      <%= link_to 'Edit', edit_book_url(book) %><br/>
       <%= link_to 'Delete', book, confirm: 'Are you sure?', method: :delete %>
     </td>
   </tr>

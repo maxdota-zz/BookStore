@@ -1,9 +1,10 @@
 class SessionController < ApplicationController
+  skip_before_filter :user_authorize, :admin_authorize
   include SimpleCaptcha::ControllerHelpers
-
+  
   def new
   end
-
+  
   def create    
     if !session[:fail_attemp] || session[:fail_attemp] < 3 || simple_captcha_valid?
       user = User.find_by_username(params[:username])
@@ -17,7 +18,7 @@ class SessionController < ApplicationController
         session[:fail_attemp] = nil
         session[:user_id] = user.id
         session[:role] = user.role
-        redirect_to users_url, :notice => "Welcome, #{user.username} (#{session[:role]} role)"
+        redirect_to store_url, :notice => "Welcome, #{user.username} (#{session[:role]} role)"
       end
     else
       redirect_to login_url, :alert => "The letters you entered does not match the image."
@@ -27,7 +28,7 @@ class SessionController < ApplicationController
   def destroy
     session[:user_id] = nil
     session[:role] = nil
-    redirect_to users_url, :notice => "Logged out successfully."
+    redirect_to store_url, :notice => "Logged out successfully."
   end
 
   def fail_attemp_add

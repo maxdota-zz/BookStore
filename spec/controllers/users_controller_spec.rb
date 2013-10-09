@@ -7,6 +7,8 @@ describe UsersController do
     @admin = FactoryGirl.create(:user, :activation => true)
     @activated_user = FactoryGirl.create(:user, :activation => true, :role => "normal")
     @inactivated_user = FactoryGirl.create(:user, :role => "normal")
+    session[:user_id] = @admin.id
+    session[:role] = "admin"
   end
   
   context "Edit account" do
