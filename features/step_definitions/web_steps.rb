@@ -7,6 +7,6 @@ When /^(?:|I )go to (.+)$/ do |page_name|
   when "the login page"
     then visit login_url
   else
-    puts "WRONGGGG"
+    raise "UNEXPECTED PAGE TO VISIT"  
   end
 end

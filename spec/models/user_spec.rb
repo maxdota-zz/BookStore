@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe User do
-  before do
-    @user = FactoryGirl.create(:user)
-  end  
+  let!(:admin) { FactoryGirl.create(:admin) }
+  let!(:user) { FactoryGirl.create(:normal_user) }
   
   describe "Validations" do    
     it {should validate_presence_of :username}
@@ -15,22 +14,22 @@ describe User do
   end
 
   it "is invalid with a phone number contains letter" do
-    @user.phone = "0986586g"
-    @user.should_not be_valid
+    user.phone = "0986586g"
+    user.should_not be_valid
   end
 
   it "is invalid with a short phone number " do
-    @user.phone = "025"
-    @user.should_not be_valid
+    user.phone = "025"
+    user.should_not be_valid
   end
 
   it "is invalid with a non-zero at start phone number " do
-    @user.phone = "48698654"
-    @user.should_not be_valid
+    user.phone = "48698654"
+    user.should_not be_valid
   end
 
   it "is invalid with an invalid email address " do
-    @user.email_address = "hello world"
-    @user.should_not be_valid
+    user.email_address = "hello world"
+    user.should_not be_valid
   end
 end

@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe Book do
-  before do
-    @book = FactoryGirl.create(:book)
-  end
 
   describe "Validations" do    
     it {should validate_presence_of :title}

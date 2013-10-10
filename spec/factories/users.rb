@@ -8,6 +8,20 @@ FactoryGirl.define do
     f.password_confirmation { |i| i }
     f.email_address "abc@something.com"
     f.phone "01345678978"
-    f.role "admin"
-  end
+    
+    factory :normal_user do |f|
+      f.role "normal"
+      f.activation true
+    end
+  
+    factory :inactivated_user do |f|
+      f.role "normal"
+      f.activation false
+    end
+    
+    factory :admin do |f|
+      f.role "admin"
+      f.activation true
+    end
+  end  
 end

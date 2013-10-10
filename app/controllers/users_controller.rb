@@ -152,10 +152,11 @@ class UsersController < ApplicationController
       @code = params[:token]
       @user = User.find_by_tokenized_code(@code)
       if @user and @user.activation
-        @resetting = true
         session[:code] = @code
         session[:temp_username] = @user.username
         flash[:notice] = "Correct token code."
+      else        
+        flash[:notice] = "Incorrect token code."
       end
     else
       @user_info = User.new(params[:user])
