@@ -194,13 +194,6 @@
 }
 
 .store {
-  h1, .title {
-    margin: 0;
-    padding-bottom: 0.5em;
-    font:  150% sans-serif;
-    color: #226;
-    border-bottom: 3px dotted #77d;
-  }
 
   /* An entry in the store catalog */
   .entry {
@@ -250,13 +243,6 @@
 }
 
 .categories {
-  h1 {
-    margin: 0;
-    padding-bottom: 0.5em;
-    font:  150% sans-serif;
-    color: #226;
-    border-bottom: 3px dotted #77d;
-  }
 
   table {
     border-collapse:collapse;
@@ -355,3 +341,13 @@
   padding-left: 100px;
   padding-right: 20px;
 }
+
+h1, .title {
+  margin: 0px;
+  margin-bottom: 10px;
+  padding-bottom: 0.5em;
+  font:  150% sans-serif;
+  color: #226;
+  border-bottom: 3px dotted #77d;
+}
+

@@ -1,0 +1,17 @@
+%h1
+  Please enter the following information to change your email
+%br
+- if notice
+  %p{ :id => "notice" } 
+    = notice
+    
+= form_for(@user, :url => change_email_path, :method => :post) do |f|
+  .field
+    = f.label :password 
+    = f.password_field :password 
+  .field
+    = f.label :email_address 
+    = f.text_field :email_address
+  %br
+  .actions
+    = f.submit "Change", :class => "btn btn-info"

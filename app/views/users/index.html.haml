@@ -1,0 +1,49 @@
+%h1
+  User List
+- if notice
+  %p{ :id => "notice" } 
+    = notice
+    
+%table{ :width => "100%" }
+  %tr{ :class => "user" }
+    %th Email address     
+    %th Username
+    %th Phone
+    %th Full name
+    %th Birthday
+    %th Account creation date
+    %th{ :colspan => "2" } Activation
+    %th{ :colspan => "2" } Role
+    %th
+    %th
+
+  - @users.each do |user|
+    %tr{ :class => "user" }
+      %td 
+        = user.email_address
+      %td 
+        = user.username
+      %td 
+        = user.phone 
+      %td 
+        = user.full_name 
+      %td 
+        = user.birthday 
+      %td 
+        = user.account_creation_date
+      %td 
+        = user.activation 
+      %td
+        - if !user.activation && !user.tokenized_code.empty? 
+          = link_to "Activate", activate_path(user.tokenized_code) 
+      %td
+        = user.role
+      %td
+        - if user.role == "admin"
+          = link_to image_tag("arrow_down.jpg"), downgrade_path(user.id.to_s)
+        - else 
+          = link_to image_tag("arrow_up.jpeg"), upgrade_path(user.id.to_s) 
+      %td
+        = link_to "Edit", edit_user_url(user)
+      %td
+        = link_to "Delete", user, :method => :delete, :data => { :confirm => "Are you sure?" }

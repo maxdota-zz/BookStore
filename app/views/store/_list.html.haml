@@ -1,0 +1,46 @@
+.navbar.navbar-default{ :role => "navigation" }
+  = link_to "Max's Bookshop Catalog", store_url, :class => "title brand"
+  %ul{ :class => "nav navbar-nav"}
+    - if !@categories.nil?
+      - @categories.each do |category|
+        - if @category && @category.id == category.id
+          <li class="active">
+        - else 
+          <li>
+        = link_to category.name, store_browse_path(category.id)
+%br
+- if notice
+  %p{ :id => "notice" } 
+    = notice
+%br
+%div
+  - if session[:pagination]
+    See 
+    = select_tag :pagination, options_for_select((1..10).map{|s| ["#{s}", s]}, session[:pagination])
+    books per page
+  - else
+    See 
+    = select_tag :pagination, options_for_select((1..10).map{|s| ["#{s}", s]}, 5)
+    books per page
+
+- if @books
+  - @books.each do |book|
+    .entry
+      = image_tag(book.photo_url)
+      %h3
+        = book.title
+      - @rating = (book.total_rating_count == 0 ? 0 : book.total_rating_value / book.total_rating_count).round
+      .star-container.left
+        = render 'comments/stars'
+      %p 
+        by 
+        = book.author_name
+      %p
+        = sanitize(book.description)
+      .price_line
+        %span{ :class => "price" }
+          = number_to_currency(book.unit_price)
+        %span
+          = link_to 'Detail', book 
+%p
+  = will_paginate @books
