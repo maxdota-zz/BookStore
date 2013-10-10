@@ -1,0 +1,37 @@
+%h1
+  Change Personal Information
+
+= form_for(@user) do |f|
+  - if @user.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@user.errors.count, "error") 
+        \. Invalid registration.
+      %ul>
+        - @user.errors.full_messages.each do |msg|
+          %li>
+            = msg  
+  - if notice
+    %p{ :id => "notice" } 
+      = notice
+
+  .field
+    = f.label :full_name 
+    = f.text_field :full_name 
+  .field
+    = f.label :username 
+    = f.text_field :username 
+  .field
+    = f.label :phone 
+    = f.text_field :phone 
+  .field
+    = f.label :birthday 
+    = f.date_select(:birthday, :start_year => 1920, :end_year => 2000) 
+  %br 
+  = show_simple_captcha 
+  %br
+  .actions
+    = f.submit :class => "btn btn-info"
+
+= link_to "Back", users_path 
+

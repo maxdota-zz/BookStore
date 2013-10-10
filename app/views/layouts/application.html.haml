@@ -1,0 +1,67 @@
+!!! html
+%html
+  %head
+    %title Max's Online Bookstore
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+
+  %body{ :class => controller.controller_name }
+    #banner
+      = image_tag("logo.png")
+      = @page_title || "Max Bookshelf"
+      #time
+        = Time.now
+
+    #columns
+      #side
+        %ul{ :class => "nav nav-pills nav-stacked" }
+          %li
+            = link_to raw("<i class='icon-home icon-white'></i> Home"), store_url
+          - if session[:role]
+            %li
+              %h3 User Panel
+            %li
+              = link_to raw("<i class='icon-edit icon-white'></i> Edit account information"), edit_user_url(session[:user_id])
+            %li
+              = link_to 'Change Email', change_email_address_url
+            %li
+              = link_to 'Change Password', change_password_path
+            %li
+              = link_to 'Log out', logout_url, method: :delete
+            - if session[:role] == "admin"
+              %li
+                %h3 Admin Panel      
+              %li
+                = link_to raw('User List'), users_url
+              %li
+                = link_to raw('Book List'), books_url
+              %li
+                = link_to raw('Category List'), categories_url 
+          - else 
+            %li
+              = link_to 'Log In', login_url
+            %li
+              = link_to 'Register', new_user_url
+            %li
+              = link_to 'Forgot password?', password_reset_url
+        %h3{ :class => "sidebar-title" } Search
+        = form_tag(book_search_url, :method => 'get', :class => "better-search-bar option") do |f|
+          .right
+            .btn-group{ :toggle => "buttons" }
+              %label
+                %input{ :type => "radio", :name => "search_type", :id => "author", :value => "author" } Author Name
+              %label
+                %input{ :type => "radio", :name => "search_type", :id => "title", :value => "author", :checked => true } Title
+              
+                
+          
+          = search_field_tag :search_input, "", class: "search-query span2" 
+          %button{ :class => 'btn right' }
+            %i{ :class => 'icon-search' }
+          Choose a category: 
+          - @options = Category.all.map{|c| [c.name, c.id]}
+          - @options << ["All categories","all"]
+          = select_tag :search_category, options_for_select(@options, "all")
+      #main
+        = yield

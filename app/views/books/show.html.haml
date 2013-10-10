@@ -1,0 +1,65 @@
+- if notice
+  %p{ :id => "notice" }
+    = notice
+%h1
+  = @book.title
+
+= image_tag(@book.photo_url, :class => 'detail_image')
+by 
+%b
+  = @book.author_name
+%br
+= render 'comments/stars'
+.left
+  Average Rating:
+  = number_with_precision(@average_rating, precision: 2)
+%p
+  | Rating count: 
+  = number_with_precision(@book.total_rating_count, precision: 0)
+%p
+  = strip_tags(@book.description) 
+%p
+  %b Publisher:
+  = @book.publisher_name
+%p
+  %b Published date:
+  = @book.published_date 
+%p
+  %b Price:
+  = number_to_currency(@book.unit_price)
+= link_to 'Back', store_path
+
+%h3 Comments
+- @comments.each do |comment| 
+  .comment
+    .field
+      - if session[:role] == "admin"
+        .right          
+          = link_to 'Delete comment', comment, method: :delete, data: { confirm: 'Are you sure?' }
+      User 
+      %b
+        =comment.user.username
+      rated 
+      - @rating = comment.rating
+      = render 'comments/stars'
+      on 
+      = comment.date
+    %b His/her comment:
+    %br
+    = comment.content 
+%p
+  = will_paginate @comments
+
+- if @comment
+  .comment
+    = form_for(@comment) do |f|
+      .field
+        .left
+          = f.label "Your comment: "
+          %br
+          = f.label "Rating"
+          = f.select :rating, %w[1 2 3 4 5]
+          = f.hidden_field :book_id, :value => @book.id
+        = f.text_area :content, :class => "better_field"    
+      .actions
+        = f.submit "Submit", :class => "btn btn-info"

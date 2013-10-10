@@ -1,0 +1,20 @@
+.bookstore_form
+  - if flash[:alert]
+    %p{ :id => "notice" }
+      = flash[:alert]
+
+  = form_tag do
+    .fieldset
+      %h1
+        Please Log In
+      .field
+        = label_tag :username, 'Username:'
+        = text_field_tag :username, params[:username] 
+      .field
+        = label_tag :password, 'Password:'
+        = password_field_tag :password, params[:password] 
+      - if session[:fail_attemp] && session[:fail_attemp] >= 3
+        %br
+        = show_simple_captcha 
+        %br    
+      = submit_tag "Login", :class => "btn btn-info"

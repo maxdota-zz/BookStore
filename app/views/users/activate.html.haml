@@ -1,0 +1,12 @@
+- if notice
+  %p{ :id => "notice" } 
+    = notice
+
+- if @user
+  Account 
+  = @user.username
+  has been activated with code 
+  = @code
+- else 
+  Fake token 
+  = @code
