@@ -1,3 +1,7 @@
+- if notice
+  %p{ :id => "notice" } 
+    = notice
+    
 .navbar.navbar-default{ :role => "navigation" }
   = link_to "Max's Bookshop Catalog", store_url, :class => "title brand"
   %ul{ :class => "nav navbar-nav"}
@@ -9,9 +13,6 @@
           <li>
         = link_to category.name, store_browse_path(category.id)
 %br
-- if notice
-  %p{ :id => "notice" } 
-    = notice
 %br
 %div
   - if session[:pagination]

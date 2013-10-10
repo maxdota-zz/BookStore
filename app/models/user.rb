@@ -20,6 +20,11 @@ class User < ActiveRecord::Base
   after_save :ensure_an_admin_remains
   before_create :set_defaults
 
+  def add_token
+    self.update_attribute("tokenized_code", Digest::MD5.hexdigest("#{self.full_name} #{self.email_address}\
+      #{rand(1000).to_s} #{rand(1000).to_s} #{rand(1000).to_s}"))
+  end
+  
   def send_activation_email(name, account, email_address, activate_link)
     send_email(email_address, 
       "Max's Online Bookstore Account Activation",
@@ -33,14 +38,14 @@ class User < ActiveRecord::Base
       )
   end
 
-  def send_password_reset_email(name, account, email_address, reset_link)
-    send_email(email_address, 
+  def send_password_reset_email(reset_link)
+    send_email(self.email_address, 
       "Max's Online Bookstore Password Reset",
-      "Welcome to Max's Online Bookstore, #{name}. <br /> 
+      "Welcome to Max's Online Bookstore, #{self.full_name}. <br /> 
       Please copy the following link and paste them to the browser address bar to reset your password: <br />
       #{reset_link}",
-      "<p>Welcome to Max's Online Bookstore, #{name}.</p>
-        <p>You have recently requested to reset your password of account #{account}</p>
+      "<p>Welcome to Max's Online Bookstore, #{self.full_name}.</p>
+        <p>You have recently requested to reset your password of account #{self.username}</p>
         <p>Please click the following link to reset your password: </p>
         <a href='#{reset_link}'> Reset Password </a>"
       )

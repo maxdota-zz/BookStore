@@ -1,9 +1,8 @@
-%h1 Book List
-
 - if notice
   %p{ :id => "notice" }
     = notice 
     
+%h1 Book List 
 %table
   = link_to '+ New Book', new_book_path
   - @books.each do |book|

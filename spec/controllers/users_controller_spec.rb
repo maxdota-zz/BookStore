@@ -61,7 +61,8 @@ describe UsersController do
     context "Update personal information" do
       it "should update phone number" do
         put :update, :id => user.id, :user => { :phone => "0123456789" }
-        User.find(user.id).phone.should == "0123456789"        
+        user.reload
+        user.phone.should == "0123456789"        
       end
       it "should update full name" do        
         put :update, :id => user.id, :user => { :full_name => "Jo John" }

@@ -20,6 +20,7 @@ class BooksController < ApplicationController
     @rating = @average_rating.round
     if session[:user_id]
       @comment = Comment.new
+      session[:book_id] = @book.id
     end
     @comments = @book.comments.order(:date).paginate page: params[:page], per_page: 5
 
@@ -52,7 +53,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
-        format.html { redirect_to @book, :notice => "Book was successfully created." }
+        format.html { redirect_to books_url, :notice => "Book was successfully created." }
         format.json { render :json => @book, :status => :created, :location => @book }
       else
         format.html { render :action => "new" }
@@ -87,7 +88,7 @@ class BooksController < ApplicationController
       if @book.errors.any?
         format.html { redirect_to books_url, :notice => @book.errors.full_messages[0] }
       else
-        format.html { redirect_to books_url }
+        format.html { redirect_to books_url, :notice => "Book was removed successfully." }
       end
     end
   end

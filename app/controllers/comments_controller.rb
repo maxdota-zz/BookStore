@@ -42,19 +42,9 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(params[:comment])
-    @comment.user_id = session[:user_id]
-    if !Comment.where("user_id = ? and book_id = ?", @comment.user_id, @comment.book_id).empty?
-      redirect_to book_path(@comment.book_id), notice: "You cannot comment and rate a book twice."
-    else
-      @comment.date = Date.current
-      if @comment.save
-        @comment.book.add_rate(@comment.rating)
-        redirect_to book_path(@comment.book_id), notice: "Comment has been made successfully."
-      else
-        redirect_to book_path(@comment.book_id), notice: @comment.errors.full_messages[0]
-      end
-    end
+    comment = Comment.new(params[:comment])
+    result = Book.find(session[:book_id]).add_comment(comment, session[:user_id], session[:book_id])
+    redirect_to book_path(session[:book_id]), notice: result      
   end
 
   # PUT /comments/1
@@ -77,7 +67,6 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.json
   def destroy
     @comment = Comment.find(params[:id])
-    @comment.book.remove_rate(@comment.rating)
     @comment.destroy
 
     respond_to do |format|

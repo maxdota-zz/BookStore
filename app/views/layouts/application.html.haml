@@ -12,7 +12,6 @@
       = @page_title || "Max Bookshelf"
       #time
         = Time.now
-
     #columns
       #side
         %ul{ :class => "nav nav-pills nav-stacked" }
@@ -50,12 +49,9 @@
           .right
             .btn-group{ :toggle => "buttons" }
               %label
-                %input{ :type => "radio", :name => "search_type", :id => "author", :value => "author" } Author Name
+                %input{ :type => "radio", :name => "search_type", :id => "author", :value => "author" }>=' Author Name'
               %label
-                %input{ :type => "radio", :name => "search_type", :id => "title", :value => "author", :checked => true } Title
-              
-                
-          
+                %input{ :type => "radio", :name => "search_type", :id => "title", :value => "author", :checked => true }>=' Title'
           = search_field_tag :search_input, "", class: "search-query span2" 
           %button{ :class => 'btn right' }
             %i{ :class => 'icon-search' }

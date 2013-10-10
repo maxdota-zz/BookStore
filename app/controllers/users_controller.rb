@@ -188,8 +188,8 @@ class UsersController < ApplicationController
           elsif !@user.activation
             format.html { redirect_to password_reset_url, :notice => "This account is not activated." }          
           else
-            @user.update_attribute("tokenized_code", Digest::MD5.hexdigest("#{@user.full_name} #{@user.email_address} #{rand(1000).to_s} #{rand(1000).to_s} #{rand(1000).to_s}"))
-            @user.send_password_reset_email(@user.full_name, @user.username, @user.email_address, reset_result_url(@user.tokenized_code))
+            @user.add_token
+            @user.send_password_reset_email(reset_result_url(@user.tokenized_code))
             format.html { redirect_to password_reset_url, :notice => "Please check your email to reset the password." }
           end
         end

@@ -3,7 +3,7 @@ require 'faker'
 FactoryGirl.define do 
   factory :user do |f|
     f.full_name { Faker::Name.name }
-    f.username { Faker::Name.name }
+    f.username { Faker::Internet.user_name }
     f.password { |i| i }
     f.password_confirmation { |i| i }
     f.email_address "abc@something.com"
