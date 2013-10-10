@@ -1,0 +1,8 @@
+.star
+  .star-filled.left
+    - @rating.times do |_|
+      %b
+  .star-empty.left.margin-left
+    - (5 - @rating).times do |_|
+      %b
+%br
