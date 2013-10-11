@@ -10,7 +10,9 @@ class Comment < ActiveRecord::Base
   
   private
   def content_is_less_than_500_characters
-    errors[:Comment] << "is too long (maximum is 500 characters)" if self.content.length > 500
+    if content
+      errors[:Comment] << "is too long (maximum is 500 characters)" if self.content.length > 500
+    end
   end
   def remove_rating_from_book
     self.book.remove_rate(self.rating)

@@ -3,7 +3,7 @@
     = notice
     
 .navbar.navbar-default{ :role => "navigation" }
-  = link_to "Max's Bookshop Catalog", store_url, :class => "title brand"
+  = link_to "Max's Bookshop Catalog", store_url, :class => "brand"
   %ul{ :class => "nav navbar-nav"}
     - if !@categories.nil?
       - @categories.each do |category|
@@ -43,5 +43,5 @@
           = number_to_currency(book.unit_price)
         %span
           = link_to 'Detail', book 
-%p
-  = will_paginate @books
+  %p
+    = will_paginate @books

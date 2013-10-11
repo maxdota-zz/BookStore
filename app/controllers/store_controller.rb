@@ -8,7 +8,7 @@ class StoreController < ApplicationController
     @categories = Category.all
     if !@categories.empty?
       @category = params[:category].nil? ? @categories.first : Category.find(params[:category])
-      @books = @category.books.paginate page: params[:page], per_page: session[:pagination]
+      @books = @category.books.order(:title).paginate page: params[:page], per_page: session[:pagination]
     end
   end
   
@@ -34,7 +34,7 @@ class StoreController < ApplicationController
         session[:pagination] = params[:pagination]
       end
       session[:pagination] ||= 5
-      @books = @books.paginate page: params[:page], per_page: session[:pagination]
+      @books = @books.order(:title).paginate page: params[:page], per_page: session[:pagination]
       current_search = @books
     end
   end

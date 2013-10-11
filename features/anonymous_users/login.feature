@@ -1,8 +1,6 @@
-Feature:  Anonymous users can login
+Feature: Anonymous users can login
   Anonymous users can login into the system using their credentials any
-  time. The system must reject invalid user name and password. [Use 
-  Captcha validation if the user fails to enter correct combination of 
-  username/password after 3 times.]
+  time. The system must reject invalid user name and password.
   
   Background:
     Given there is a user with username "admin"
@@ -23,7 +21,7 @@ Feature:  Anonymous users can login
 
   Scenario Outline: login account
     When I go to the login page
-    Given I fill in username with <username>
+    And I fill in username with <username>
     And I fill in password with <password>
     And I press the Login button
     Then The notice display should be <notice>

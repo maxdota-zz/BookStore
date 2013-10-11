@@ -21,22 +21,23 @@
             %li
               %h3 User Panel
             %li
-              = link_to raw("<i class='icon-edit icon-white'></i> Edit account information"), edit_user_url(session[:user_id])
+              = link_to raw("<i class='icon-edit icon-white'></i> Edit account information"), |
+              edit_user_url(session[:user_id]), :id => "edit"
             %li
-              = link_to 'Change Email', change_email_address_url
+              = link_to 'Change Email', change_email_address_url, :id => "change_email"
             %li
-              = link_to 'Change Password', change_password_path
+              = link_to 'Change Password', change_password_path, :id => "change_password"
             %li
               = link_to 'Log out', logout_url, method: :delete
             - if session[:role] == "admin"
               %li
                 %h3 Admin Panel      
               %li
-                = link_to raw('User List'), users_url
+                = link_to raw('User List'), users_url, :id => "users"
               %li
-                = link_to raw('Book List'), books_url
+                = link_to raw('Book List'), books_url, :id => "books"
               %li
-                = link_to raw('Category List'), categories_url 
+                = link_to raw('Category List'), categories_url, :id => "categories"
           - else 
             %li
               = link_to 'Log In', login_url
@@ -51,9 +52,9 @@
               %label
                 %input{ :type => "radio", :name => "search_type", :id => "author", :value => "author" }>=' Author Name'
               %label
-                %input{ :type => "radio", :name => "search_type", :id => "title", :value => "author", :checked => true }>=' Title'
+                %input{ :type => "radio", :name => "search_type", :id => "title", :value => "title", :checked => true }>=' Title'
           = search_field_tag :search_input, "", class: "search-query span2" 
-          %button{ :class => 'btn right' }
+          %button{ :class => 'btn right', :id => 'search' }
             %i{ :class => 'icon-search' }
           Choose a category: 
           - @options = Category.all.map{|c| [c.name, c.id]}

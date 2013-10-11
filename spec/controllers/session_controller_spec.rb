@@ -9,14 +9,13 @@ describe SessionController do
   context "Session" do
     it "should be invalid login with inactivate account" do
       post :create, :username => inactivated_user.username, :password => inactivated_user.password
-      expect(flash[:notice]).to have_content("Please activate your account.")
+      expect(flash[:alert]).to have_content("Please activate your account.")
     end
     it "should be invalid login with wrong username/password combination" do  
       post :create, :username => user.username, :password => "WRONG"
-      expect(flash[:notice]).to have_content("Invalid username/password combination.")
+      expect(flash[:alert]).to have_content("Invalid username/password combination.")
     end
-    it "should welcome user that logins with correct username/password combination" do 
-      user.update_attribute("activation", true)
+    it "should welcome user that logins with correct username/password combination" do
       post :create, :username => user.username, :password => user.password
       expect(flash[:notice]).to have_content("Welcome, #{user.username} (#{user.role} role)")
     end

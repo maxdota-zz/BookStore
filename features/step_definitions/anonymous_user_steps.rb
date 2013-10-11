@@ -11,14 +11,18 @@ Then /^I should see the banner with logo and bookshop name$/ do
 end
 
 Then /^I should see the side bar with all tabs$/ do
-  page.body.should include("<li><a href=\"#{store_url}\"><i class=\"icon-home icon-white\"></i> Home</a></li>")
-  page.body.should include("<li><a href=\"#{login_url}\">Log In</a></li>")
-  page.body.should include("<li><a href=\"#{new_user_url}\">Register</a></li>")
-  page.body.should include("<li><a href=\"#{password_reset_url}\">Forgot password?</a></li>")
+  page.body.should include("<a href=\"#{store_url}\"><i class=\"icon-home icon-white\"></i> Home</a>")
+  page.body.should include("<a href=\"#{login_url}\">Log In</a>")
+  page.body.should include("<a href=\"#{new_user_url}\">Register</a>")
+  page.body.should include("<a href=\"#{password_reset_url}\">Forgot password?</a>")
 end
 
 Then /^I should see the search panel$/ do
   page.body.should include("<h3 class=\"sidebar-title\">Search</h3>")
+end
+
+Then (/^I should not see the (category|book) "([^\"]*)"$/) do |type, name|    
+  page.should have_no_content(name)
 end
 
 Then (/^I should see the (category|book) "([^\"]*)"$/) do |type, name|    
@@ -47,11 +51,11 @@ Given (/^the role is "([^\"]*)"$/) do |role|
   @user.role = role
 end
 
-Given (/I fill in ([^\"]*) with ([^\"]*)$/) do |field, value|
+When (/I fill in ([^\"]*) with ([^\"]*)$/) do |field, value|
   fill_in field, :with => value
 end
 
-Given (/I press the ([^\"]*) button$/) do |button|
+When (/I press the ([^\"]*) button$/) do |button|
   click_button button
 end
 

@@ -1,7 +1,6 @@
-Feature:  Anonymous users can register for an account in the website.
+Feature: Anonymous users can register for an account in the website.
   Required information includes email, password, phone, full name, birthday.
   All information must be validated accordingly.
-  An email will be sent to user [in background] to ask them to activate their account.
 
   Scenario Outline: register account
     When I go to register page
